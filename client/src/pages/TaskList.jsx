@@ -53,7 +53,7 @@ const TaskList = () => {
 
     function handleSelectTask(task) {
         console.log(task);
-        navigate(`/task/${task.id}`);
+        navigate(`/task-list/${data.id}/task/${task.id}`);
     }
 
     function handleAddTask(e) {
@@ -103,7 +103,6 @@ const TaskList = () => {
                 </ul>
             </div>
 
-            <Button title="Add New Task" className="flex-1" onClick={() => navigate('/task')} />
             <Button title="Save" type="submit" styleType="primary" className="flex-1" onClick={handleClickSave} />
         </form>
     )
