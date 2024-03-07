@@ -31,7 +31,7 @@
   }
 
   .tm-btn-transparent {
-    @apply bg-slate-50 px-3 py-1.5 text-sm font-semibold leading-6 text-black hover:bg-slate-100;
+    @apply px-3 py-1.5 text-sm font-semibold leading-6 text-black hover:bg-slate-100;
   }
 
   .tm-btn-disabled {

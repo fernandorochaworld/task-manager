@@ -38,4 +38,4 @@ const TaskListIndex = () => {
 
 export default TaskListIndex;
 
-// ➕ ✖️ ✔️ ❌
+// ➕ ✖️ ✔️ ❌ 🖋️ ✏️ 🚀 ✅ 🔖 🏷️ 💾 

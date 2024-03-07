@@ -2,8 +2,9 @@ import { redirect, useNavigate, useParams } from "react-router-dom";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import { useDispatch, useSelector } from "react-redux";
-import { addTaskList } from "../reducers/taskManagerReducer";
-import { useEffect, useState } from "react";
+import { addTask, addTaskList } from "../reducers/taskManagerReducer";
+import { useState } from "react";
+import TaskDetail from "./TaskDetails";
 
 const taskListInitialData = {
     id: '',
@@ -16,17 +17,19 @@ const taskInitialData = {
     description: null,
     priority: 'medium',
     status: 'todo',
-    dueDate: new Date().toJSON(),
+    dueDate: null,
 };
 
 const TaskList = () => {
+    const updateTaskList = (state) => state.taskManager.taskListIndex.find(item => item.id == id)
     const { id } = useParams();
-    const taskList = useSelector(state => state.taskManager.taskListIndex.find(item => item.id == id));
+    const taskList = useSelector(updateTaskList);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [data, setData] = useState(taskList || taskListInitialData);
     const [taskTitle, setTaskTitle] = useState('');
+    const [pageKey, setPageKey] = useState(1);
 
     function handleGoBack() {
         navigate('/');
@@ -83,13 +86,33 @@ const TaskList = () => {
         dispatch(addTaskList(newData));
     }
 
+    const handleClickUpdateTask = (task, propertyName, newValue) => {
+        const editedTask = {...task};
+        const levels = {
+            high: 'low',
+            medium: 'high',
+            low: 'medium',
+        }
+        editedTask.taskListId = taskList.id;
+        if (propertyName === 'priority') {
+            editedTask['priority'] = levels[editedTask.priority] || 'high';
+        } else {
+            editedTask[propertyName] = newValue;
+        }
+        dispatch(addTask(editedTask));
+        setPageKey(pageKey+1);
+        
+        handleGoBack();
+        setTimeout(()=> navigate(`/task-list/${data.id}`));
+    }
+
     return (
         <form className="flex flex-wrap gap-5">
             <div className="flex flex-1 justify-between">
                 <h1 className="tm-title text-start">
                     Task List
                 </h1>
-                <Button title="x" className="w-12" onClick={handleGoBack} />
+                <Button text="X" title="Go to Index" className="w-12 text-bold" styleType="transparent" onClick={handleGoBack} />
             </div>
             <Input type="text" name="name" title="List Name" value={data.name} onChange={handleFieldChange} />
 
@@ -101,16 +124,19 @@ const TaskList = () => {
 
 
 
-            <div className="w-full">
+            <div key={pageKey} className="w-full">
                 * My Tasks
                 <ul>
-                    {data.tasks.map(task => (
-                        <li key={task.id} className="flex justify-between items-center m-2 odd:bg-gray-100 even:bg-gray-50">
-                            {task.title}
-                            <Button className="w-28" title="Select ✔️" onClick={() => handleSelectTask(task)}></Button>
-                        </li>
-                    ))}
+                    <li className="flex justify-between items-center m-2 bg-gray-100 font-bold">
+                        <div className="w-2/4">Title</div>
+                        <div className="w-1/4">Priority</div>
+                        <div className="w-1/4">DueDate</div>
+                        <div className="w-28">Actions</div>
+                    </li>
                 </ul>
+                <TaskDetail key={`InProgress`+pageKey} tasks={data.tasks} status="inProgress" handleClickUpdateTask={handleClickUpdateTask} handleSelectTask={handleSelectTask} />
+                <TaskDetail key={`Todo`+pageKey} tasks={data.tasks} status="todo" handleClickUpdateTask={handleClickUpdateTask} handleSelectTask={handleSelectTask} />
+                <TaskDetail key={`Done`+pageKey} tasks={data.tasks} status="done" handleClickUpdateTask={handleClickUpdateTask} handleSelectTask={handleSelectTask} />
             </div>
 
             <Button title="Save" type="submit" styleType="primary" className="flex-1" onClick={handleClickSave} />

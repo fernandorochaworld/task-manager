@@ -74,6 +74,7 @@ const slice = createSlice({
       delete task.taskListId;
       taskList.tasks.push(task);
       state.taskListIndex.push(taskList);
+      return state;
     }
   }
 })
