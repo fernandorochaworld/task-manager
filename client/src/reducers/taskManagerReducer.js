@@ -3,7 +3,9 @@
  * You'll need to make your own reducers, with actions as well to facilitate redux-toolkit
  */
 
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit';
+
+const orderTaskFn = (a, b) => a.title.localeCompare(b.title);
 
 const initialState = {
   selectedTask: null,
@@ -56,10 +58,12 @@ const slice = createSlice({
     addTaskList(state, action) {
       console.log('received action: ', action)
       console.log('updating state to ...', action.payload)
-      const taskList = action.payload;
+      const taskList = {...action.payload};
+      taskList.tasks = [...taskList.tasks];
       if (taskList.id) {
         state.taskListIndex = state.taskListIndex.filter(item => item.id !== taskList.id);
       }
+      taskList.tasks.sort(orderTaskFn);
       state.taskListIndex.push(taskList);
     },
     addTask(state, action) {
@@ -73,6 +77,7 @@ const slice = createSlice({
       }
       delete task.taskListId;
       taskList.tasks.push(task);
+      taskList.tasks.sort(orderTaskFn);
       state.taskListIndex.push(taskList);
       return state;
     }
