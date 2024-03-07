@@ -22,16 +22,25 @@ const Task = () => {
         dispatch(setTest('ABCDEFG'));
     }
 
+    function handleGoBack() {
+        navigate('/task-list');
+    }
+
     return (
-        <div className="flex flex-wrap gap-5">
-            <h1 className="tm-title">
-                Task { testValue || 'NoValue' }
-            </h1>
+        <form className="flex flex-wrap gap-5">
+            <div className="flex flex-1 justify-between">
+                <h1 className="tm-title text-start">
+                    Task
+                </h1>
+                <Button title="x" className="w-12" color="white" onClick={handleGoBack} />
+            </div>
+
             <Input type="text" name="name" title="List Name"  />
+
+            <Button title="Delete" className="flex-1" styleType="danger" onClick={handleGoBack} />
             <Button title="Act" className="flex-1" onClick={handleClick} />
-            {/* <Button title="Save" className="flex-1" onClick={() => navigate('/')} /> */}
-            <Button title="Delete" className="flex-1" onClick={() => navigate('/')} />
-        </div>
+            <Button title="Save" type="submit" className="flex-1" styleType="primary" onClick={handleGoBack} />
+        </form>
     )
 };
 

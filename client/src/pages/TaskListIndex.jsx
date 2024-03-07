@@ -1,12 +1,20 @@
 import { redirect, useNavigate } from "react-router-dom";
 import Button from "../components/Button";
-import Input from "../components/Input";
+import { useDispatch, useSelector } from "react-redux";
+import { setSelectedTaskList } from "../reducers/taskManagerReducer";
 
 const TaskListIndex = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const taskListIndex = useSelector(state => state.taskManager.taskListIndex);
+    function handleSelectTaskList(taskList) {
+        console.log(taskList);
+        dispatch(setSelectedTaskList(taskList));
+        navigate('/task-list');
+    }
     return (
         <div className="flex flex-col gap-5">
-            <h1 className="tm-title">
+            <h1 className="tm-title text-start">
                 Task List Index
             </h1>
 
@@ -16,12 +24,12 @@ const TaskListIndex = () => {
                 * Click on a item to open and edit it.
 
                 <ul>
-                    <li>Priorities for the day</li>
-                    <li>Sprint 1</li>
-                    <li>Sprint 2</li>
-                    <li>Sprint 3</li>
-                    <li>Sprint 4</li>
-                    <li>Sprint 5</li>
+                    {taskListIndex.map(taskList => (
+                        <li className="flex justify-between items-center m-2 odd:bg-gray-100 even:bg-gray-50">
+                            {taskList.name}
+                            <Button className="w-28" title="Select ✔️" onClick={() => handleSelectTaskList(taskList)}></Button>
+                        </li>
+                    ))}
                 </ul>
             </div>
         </div>
@@ -29,3 +37,5 @@ const TaskListIndex = () => {
 };
 
 export default TaskListIndex;
+
+// ➕ ✖️ ✔️ ❌
