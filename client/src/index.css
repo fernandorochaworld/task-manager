@@ -1,3 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  /* .card {
+    background-color: theme(colors.white);
+    border-radius: theme(borderRadius.lg);
+    padding: theme(spacing.6);
+    box-shadow: theme(boxShadow.xl);
+  } */
+
+  .tm-container {
+    @apply mx-auto max-w-3xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .tm-title {
+    @apply text-3xl text-center font-bold;
+  }
+
+}
+
 *,
 *::before,
 *::after {

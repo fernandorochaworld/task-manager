@@ -2,35 +2,44 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Link
+  // Link
 } from 'react-router-dom'
 
 /**
  * Importing other components
  */
-import Home from './components/Home'
-import About from './components/About'
+import TaskList from './pages/TaskList';
+import Task from './pages/Task';
+import TaskListIndex from './pages/TaskListIndex';
 
 const App = () => {
   return (
     <Router>
-      <div>
-        <nav>
+      <div className="tm-container">
+        <h1 className="tm-title">
+          Task Manager
+        </h1>
+
+
+        {/* <nav>
           <ul>
             <li>
-              <Link to="/home">Home</Link>
+              <Link to="/">Home</Link>
             </li>
             <li>
               <Link to="/about">About</Link>
             </li>
           </ul>
-        </nav>
+        </nav> */}
+
+
         {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL.
             Furthermore, notice how the content above always renders? On each page? */}
         <Routes>
-          <Route path="/home" element={<Home />} />
-          <Route path="/about" element={<About />} />
+          <Route path="/" element={<TaskListIndex />} />
+          <Route path="/task-list" element={<TaskList />} />
+          <Route path="/task" element={<Task />} />
         </Routes>
       </div>
     </Router>
