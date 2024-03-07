@@ -5,19 +5,22 @@
 
 import { createSlice } from '@reduxjs/toolkit'
 
-const initialState = ''
+const initialState = 'aaa'
 
 const testSlice = createSlice({
   name: 'test',
   initialState,
   reducers: {
-    setTest(state, action) {
+    setTest: (state, action) => {
       console.log('received action: ', action)
       console.log('updating state to ...', action.payload)
+
+      // state = action.payload;
+
       return action.payload
     }
   }
 })
 
-export const { setFilter } = testSlice.actions
+export const { setTest } = testSlice.actions
 export default testSlice.reducer
