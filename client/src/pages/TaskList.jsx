@@ -30,6 +30,8 @@ const TaskList = () => {
     const [data, setData] = useState(taskList || taskListInitialData);
     const [taskTitle, setTaskTitle] = useState('');
     const [pageKey, setPageKey] = useState(1);
+    const [errorTask, setErrorTask] = useState(null);
+    const [errorList, setErrorList] = useState(null);
 
     function handleGoBack() {
         navigate('/');
@@ -42,12 +44,29 @@ const TaskList = () => {
         })
     }
 
+    const validateList = () => {
+        const name = data?.name?.trim();
+        return name ? null : 'List name is required.';
+    }
+
+    const validateTask = () => {
+        const title = taskTitle.trim();
+        return title ? null : 'New task title is required.';
+    }
+
     function handleTaskTitleChange(e) {
         setTaskTitle(e.target.value);
     }
 
     const handleClickSave = (e) => {
         e.preventDefault();
+
+        const error = validateList();
+        if (error) {
+            setErrorList(error);
+            return;
+        }
+        setErrorList(null);
         
         const newTask = {
             ...data,
@@ -68,6 +87,14 @@ const TaskList = () => {
     function handleAddTask(e) {
         e.preventDefault();
         e.stopPropagation();
+
+        const error = validateTask();
+        if (error) {
+            setErrorTask(error);
+            return;
+        }
+        setErrorTask(null);
+
         const newTask = {
             ...taskInitialData,
             id: taskTitle,
@@ -114,11 +141,15 @@ const TaskList = () => {
                 </h1>
                 <Button text="X" title="Go to Index" className="w-12 text-bold" styleType="transparent" onClick={handleGoBack} />
             </div>
-            <Input type="text" name="name" title="List Name" value={data.name} onChange={handleFieldChange} />
+            <Input type="text" name="name" title="List Name" value={data.name} error={errorList} onChange={handleFieldChange} />
 
 
             <form className="flex w-full justify-between items-end gap-5">
-                <Input type="text" name="taskTitle" title="New Task" value={taskTitle} onChange={handleTaskTitleChange} />
+                <Input type="text" name="taskTitle" title="New Task Title" placeholder="Type and press enter to add a new task."
+                    value={taskTitle}
+                    onChange={handleTaskTitleChange}
+                    error={errorTask}
+                    />
                 <Button type="submit" title="Add Task" styleType="primary" className="w-24" onClick={handleAddTask} />
             </form>
 
@@ -126,14 +157,12 @@ const TaskList = () => {
 
             <div key={pageKey} className="w-full">
                 * My Tasks
-                <ul>
-                    <li className="flex justify-between items-center m-2 bg-gray-100 font-bold">
-                        <div className="w-2/4">Title</div>
-                        <div className="w-1/4">Priority</div>
-                        <div className="w-1/4">DueDate</div>
-                        <div className="w-28">Actions</div>
+                {/* <ul>
+                    <li className="flex justify-between items-center m-2 px-2 bg-gray-100 font-bold">
+                        <div>Task Title</div>
+                        <div>Actions</div>
                     </li>
-                </ul>
+                </ul> */}
                 <TaskDetail key={`InProgress`+pageKey} tasks={data.tasks} status="inProgress" handleClickUpdateTask={handleClickUpdateTask} handleSelectTask={handleSelectTask} />
                 <TaskDetail key={`Todo`+pageKey} tasks={data.tasks} status="todo" handleClickUpdateTask={handleClickUpdateTask} handleSelectTask={handleSelectTask} />
                 <TaskDetail key={`Done`+pageKey} tasks={data.tasks} status="done" handleClickUpdateTask={handleClickUpdateTask} handleSelectTask={handleSelectTask} />
