@@ -8,6 +8,7 @@ const Button = ({ type, text, title, onClick, className, value, disabled, styleT
     primary: 'tm-btn-primary',
     warning: 'tm-btn-warning',
     danger: 'tm-btn-warning',
+    transparent: 'tm-btn-transparent',
   }
   return (
     <button

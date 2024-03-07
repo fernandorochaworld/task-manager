@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 
-const Textarea = ({type, name, title, value, className, disabled, onChange}) => {
+const Textarea = ({name, title, value, className, disabled, onChange}) => {
   
   const [, setVal] = useState(value || '');
 
@@ -15,14 +15,13 @@ const Textarea = ({type, name, title, value, className, disabled, onChange}) => 
     <div className="w-full">
       <label htmlFor={name} className="block text-sm font-medium leading-6 text-gray-900">{title}</label>
       <div className="mt-2">
-        <textarea id={name} name={name} type={type} value={value} required className={myClass} disabled={(disabled)? 'disabled' : ''} onChange={handleChange} rows="5" />
+        <textarea id={name} name={name} value={value} required className={myClass} disabled={(disabled)? 'disabled' : ''} onChange={handleChange} rows="5" />
       </div>
     </div>
   );
 };
 
 Textarea.propTypes = {
-  type: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   value: PropTypes.any,
