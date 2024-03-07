@@ -13,13 +13,15 @@ import { Provider } from 'react-redux'
  * Importing reducers
  */
 import testReducer from './reducers/testReducer.js'
+import taskManager from './reducers/taskManagerReducer.js'
 
 /**
  * Creating the store w/reducers
  */
 const store = configureStore({
   reducer: {
-    test: testReducer
+    test: testReducer,
+    taskManager: taskManager
   }
 })
 

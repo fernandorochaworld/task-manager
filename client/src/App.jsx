@@ -38,7 +38,7 @@ const App = () => {
             Furthermore, notice how the content above always renders? On each page? */}
         <Routes>
           <Route path="/" element={<TaskListIndex />} />
-          <Route path="/task-list" element={<TaskList />} />
+          <Route path="/task-list/:id?" element={<TaskList />} />
           <Route path="/task" element={<Task />} />
         </Routes>
       </div>
