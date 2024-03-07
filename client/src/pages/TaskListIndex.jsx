@@ -10,7 +10,7 @@ const TaskListIndex = () => {
     function handleSelectTaskList(taskList) {
         console.log(taskList);
         dispatch(setSelectedTaskList(taskList));
-        navigate('/task-list');
+        navigate(`/task-list/${taskList.id}`);
     }
     return (
         <div className="flex flex-col gap-5">
@@ -25,7 +25,7 @@ const TaskListIndex = () => {
 
                 <ul>
                     {taskListIndex.map(taskList => (
-                        <li className="flex justify-between items-center m-2 odd:bg-gray-100 even:bg-gray-50">
+                        <li key={taskList.id} className="flex justify-between items-center m-2 odd:bg-gray-100 even:bg-gray-50">
                             {taskList.name}
                             <Button className="w-28" title="Select ✔️" onClick={() => handleSelectTaskList(taskList)}></Button>
                         </li>

@@ -15,11 +15,11 @@ const initialState = {
       tasks: [
         {
           id: 'task1',
-          name: 'task1',
+          title: 'task1',
           description: 'My task 1',
           priority: 'high',
           status: 'todo',
-          dueDate: new Date(),
+          dueDate: new Date().toJSON(),
         }
       ]
     }

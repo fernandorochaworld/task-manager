@@ -39,7 +39,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<TaskListIndex />} />
           <Route path="/task-list/:id?" element={<TaskList />} />
-          <Route path="/task" element={<Task />} />
+          <Route path="/task/:id?" element={<Task />} />
         </Routes>
       </div>
     </Router>
