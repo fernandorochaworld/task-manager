@@ -2,7 +2,7 @@ import { redirect, useNavigate, useParams } from "react-router-dom";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import { useDispatch, useSelector } from "react-redux";
-import { addTaskList, setSelectedTaskList } from "../reducers/taskManagerReducer";
+import { addTaskList } from "../reducers/taskManagerReducer";
 import { useEffect, useState } from "react";
 
 const taskListInitialData = {
@@ -43,11 +43,17 @@ const TaskList = () => {
         setTaskTitle(e.target.value);
     }
 
-    const handleClickSave = () => {
-        data.id = data.id || data.name;
-        console.log(data);
-        dispatch(addTaskList(data));
-        dispatch(setSelectedTaskList(null));
+    const handleClickSave = (e) => {
+        e.preventDefault();
+        
+        const newTask = {
+            ...data,
+            id: data.id || data.name
+        };
+
+        console.log(newTask);
+        dispatch(addTaskList(newTask));
+        // dispatch(setSelectedTaskList(null));
         navigate('/')
     }
 
@@ -69,8 +75,12 @@ const TaskList = () => {
             tasks: data.tasks.map(item => item)
         };
         newData.tasks.push(newTask);
+        newData.id = newData.id || newData.name;
         setData(newData);
         setTaskTitle('');
+        
+        //Save TaskList
+        dispatch(addTaskList(newData));
     }
 
     return (

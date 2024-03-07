@@ -16,7 +16,7 @@ const App = () => {
   return (
     <Router>
       <div className="tm-container">
-        <h1 className="tm-title">
+        <h1 className="tm-title mb-8">
           Task Manager
         </h1>
 

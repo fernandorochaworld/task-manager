@@ -6,6 +6,7 @@ import { setTest } from "../reducers/testReducer";
 import { useState } from "react";
 import Select from "../components/Select";
 import Textarea from "../components/Textarea";
+import { addTask } from "../reducers/taskManagerReducer";
 
 
 const Task = () => {
@@ -13,13 +14,17 @@ const Task = () => {
     const dispatch = useDispatch();
 
     const { taskListId, taskId } = useParams();
-    const task = useSelector(state => state.taskManager.taskListIndex.find(item => item.id == taskListId)?.tasks.find(task => task.id === taskId));
+    const taskListIndex = useSelector(state => state.taskManager.taskListIndex);
+    const task = taskListIndex.find(item => item.id == taskListId)?.tasks.find(task => task.id === taskId);
+    // const task = useSelector(state => state.taskManager.taskListIndex.find(item => item.id == taskListId)?.tasks.find(task => task.id === taskId));
 
     const [data, setData] = useState(task);
 
     // const testValue = useSelector(state => state.test);
 
-    const handleClick = () => {
+    const handleClickSave = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
         // const action = {
         //     type: 'test',
         //     payload: 'ABCD'
@@ -27,7 +32,10 @@ const Task = () => {
 
         // dispatch(action);
         // alert('here');
-        dispatch(setTest('ABCDEFG'));
+        const editedTask = {...data};
+        editedTask.taskListId = taskListId;
+        dispatch(addTask(editedTask));
+        handleGoBack();
     }
 
     function handleFieldChange(e) {
@@ -47,7 +55,7 @@ const Task = () => {
                 <h1 className="tm-title text-start">
                     Task
                 </h1>
-                <Button title="x" className="w-12" color="white" onClick={handleGoBack} />
+                <Button title="x" className="w-12" styleType="transparent" onClick={handleGoBack} />
             </div>
 
             <Input type="text" name="title" title="Title" value={data.title} onChange={handleFieldChange} />
@@ -63,8 +71,7 @@ const Task = () => {
             <Textarea name="description" title="Description" value={data.description} onChange={handleFieldChange} />
 
             <Button title="Delete" className="flex-1" styleType="danger" onClick={handleGoBack} />
-            {/* <Button title="Act" className="flex-1" onClick={handleClick} /> */}
-            <Button title="Save" type="submit" className="flex-1" styleType="primary" onClick={handleGoBack} />
+            <Button title="Save" type="submit" className="flex-1" styleType="primary" onClick={handleClickSave} />
         </form>
     )
 };
