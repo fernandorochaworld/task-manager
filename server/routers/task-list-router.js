@@ -9,20 +9,20 @@ import Task from '../models/task.js'
 
 const tasklistRouter = express.Router()
 
-tasklistRouter.get('/', async (request, response) => {
+tasklistRouter.get('/:personId/task-list/', async (request, response) => {
     const tasklists = await TaskList.find({})
     response.json(tasklists)
 })
 
-tasklistRouter.get('/:id', async (request, response) => {
+tasklistRouter.get('/:personId/task-list/:id', async (request, response) => {
     const id = request.params.id
     const tasklist = await TaskList.findById(id)
     response.json(tasklist)
 })
 
-tasklistRouter.post('/:id', async (request, response) => {
+tasklistRouter.post('/:personId/task-list', async (request, response) => {
     // Get fields
-    const personId = request.params.id
+    const personId = request.params.personId
     const { name } = request.body
     // Error handling
     if (!name) {
@@ -49,7 +49,7 @@ tasklistRouter.post('/:id', async (request, response) => {
     response.status(201).send(savedTaskList)
 })
 
-tasklistRouter.delete('/:id', async (request, response) => {
+tasklistRouter.delete('/:personId/task-list/:id', async (request, response) => {
     // Get fields
     const tasklistId = request.params.id
     const { personId } = request.body

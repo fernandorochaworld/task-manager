@@ -4,7 +4,7 @@ import { collectionTransformation } from "../utils/mongoose-utils.js";
 const PersonSchema = new mongoose.Schema({
     name: { type: String, required: true },
     passwordHash: { type: String, required: true },
-    taskLists: [
+    tasklists: [
         {
           type: mongoose.Schema.Types.ObjectId,
           ref: 'task-list'

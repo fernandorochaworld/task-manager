@@ -9,7 +9,7 @@ const router = express.Router();
 export default () => {
     router.use('/api/login', loginRouter);
     router.use('/api/person', personRouter);
-    router.use('/api/task-list', tasklistRouter);
+    router.use('/api/person', tasklistRouter);
     router.use('/api/task', taskRouter);
 
     router.all('*', (req, res) => {
