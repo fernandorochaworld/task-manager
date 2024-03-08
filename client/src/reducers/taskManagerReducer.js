@@ -32,40 +32,28 @@ const slice = createSlice({
   name: 'taskManager',
   initialState,
   reducers: {
-    // setSelectedTask: (state, action) => {
-    //   console.log('received action: ', action)
-    //   console.log('updating state to ...', action.payload)
-    //   state.selectedTask = [...state.selectedTask, action.payload];
-    //   return state;
-    // },
-    // setSelectedTaskList(state, action) {
-    //   state.selectedTaskList = action.payload;
-    // },
-    // setTaskList: (state, action) => {
-    //   console.log('received action: ', action)
-    //   console.log('updating state to ...', action.payload)
-
-      
-    //   return action.payload
-    // },
-    updateTaskListIndex(state, action) {
-      console.log('received state: ', state)
-      console.log('received action: ', action)
-      console.log('updating state to ...', action.payload)
-
-      state.taskListIndex = action.payload;
-    },
     addTaskList(state, action) {
       console.log('received action: ', action)
       console.log('updating state to ...', action.payload)
-      const taskList = {...action.payload};
+      const taskList = { ...action.payload };
       taskList.tasks = [...taskList.tasks];
       if (taskList.id) {
         state.taskListIndex = state.taskListIndex.filter(item => item.id !== taskList.id);
       }
       taskList.tasks.sort(orderTaskFn);
       state.taskListIndex.push(taskList);
+      return state;
     },
+    
+    deleteTaskList(state, action) {
+      console.log('received action: ', action)
+      console.log('updating state to ...', action.payload)
+      if (action.payload.id) {
+        state.taskListIndex = state.taskListIndex.filter(item => item.id !== action.payload.id);
+      }
+      return state;
+    },
+
     addTask(state, action) {
       console.log('received action: ', action)
       console.log('updating state to ...', action.payload)
@@ -80,15 +68,28 @@ const slice = createSlice({
       taskList.tasks.sort(orderTaskFn);
       state.taskListIndex.push(taskList);
       return state;
+    },
+
+    deleteTask(state, action) {
+      console.log('received action: ', action)
+      console.log('updating state to ...', action.payload)
+      const task = {...action.payload};
+      const taskList = state.taskListIndex.filter(item => item.id === task.taskListId)?.[0];
+      state.taskListIndex = state.taskListIndex.filter(item => item.id !== task.taskListId);
+      if (taskList) {
+        taskList.tasks = taskList.tasks.filter(item => item.id !== task.id);
+      }
+      taskList.tasks.sort(orderTaskFn);
+      state.taskListIndex.push(taskList);
+      return state;
     }
   }
 })
 
 export const {
   addTaskList,
+  deleteTaskList,
   addTask,
-  updateTaskListIndex,
-  // setSelectedTask,
-  // setSelectedTaskList,
+  deleteTask,
 } = slice.actions
 export default slice.reducer

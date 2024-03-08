@@ -43,8 +43,8 @@ const TaskDetail = ({tasks, status, handleClickUpdateTask, handleSelectTask, han
                     <div className="w-full flex items-center">
                         <div className="grow">{task.title}</div>
                         <div className="flex shrink items-center text-xs">
-                            {task.priority !== 'low' ? `${task.priority} priority. `: ''}
-                            {task.dueDate ? `Due on ${task.dueDate}. `: ''}
+                            {task.priority !== 'low' ? <span style={{textTransform:'capitalize'}}>{`${task.priority} priority. `}</span>: ''}
+                            {task.dueDate ? `Due ${task.dueDate}. `: ''}
                             
                             {
                                 ['inProgress', 'todo'].includes(status) && (overTask === task) &&

@@ -2,7 +2,7 @@ import { redirect, useNavigate, useParams } from "react-router-dom";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import { useDispatch, useSelector } from "react-redux";
-import { addTask, addTaskList } from "../reducers/taskManagerReducer";
+import { addTask, addTaskList, deleteTask, deleteTaskList } from "../reducers/taskManagerReducer";
 import { useState } from "react";
 import TaskDetail from "./TaskDetails";
 
@@ -29,7 +29,6 @@ const TaskList = () => {
     const navigate = useNavigate();
     const [data, setData] = useState(taskList || taskListInitialData);
     const [taskTitle, setTaskTitle] = useState('');
-    const [pageKey, setPageKey] = useState(1);
     const [errorTask, setErrorTask] = useState(null);
     const [errorList, setErrorList] = useState(null);
 
@@ -58,6 +57,11 @@ const TaskList = () => {
         setTaskTitle(e.target.value);
     }
 
+    const reloadData = (taskListId) => {
+        handleGoBack();
+        setTimeout(()=> navigate(`/task-list/${taskListId}`));
+    }
+
     const handleClickSave = (e) => {
         e.preventDefault();
 
@@ -68,15 +72,32 @@ const TaskList = () => {
         }
         setErrorList(null);
         
-        const newTask = {
+        const newTaskList = {
             ...data,
             id: data.id || data.name
         };
 
-        console.log(newTask);
-        dispatch(addTaskList(newTask));
-        // dispatch(setSelectedTaskList(null));
-        navigate('/')
+        console.log(newTaskList);
+        dispatch(addTaskList(newTaskList));
+
+        // If adding new Task List, then continue on the page. Else go back.
+        if (data.id) {
+            handleGoBack();
+        } else {
+            setData(newTaskList);
+            reloadData(newTaskList.id);
+        }
+    }
+
+    const handleClickDelete = (e) => {
+        e.preventDefault();
+
+        if (data.id) {
+            setErrorList(null);
+    
+            dispatch(deleteTaskList(data));
+            handleGoBack();
+        }
     }
 
     function handleSelectTask(task) {
@@ -100,17 +121,18 @@ const TaskList = () => {
             id: taskTitle,
             title: taskTitle,
         };
-        const newData = {
+        const newList = {
             ...data,
             tasks: data.tasks.map(item => item)
         };
-        newData.tasks.push(newTask);
-        newData.id = newData.id || newData.name;
-        setData(newData);
+        newList.tasks.push(newTask);
+        newList.id = newList.id || newList.name;
+        setData(newList);
         setTaskTitle('');
         
         //Save TaskList
-        dispatch(addTaskList(newData));
+        dispatch(addTaskList(newList));
+        // reloadData(data.id);
     }
 
     const handleClickUpdateTask = (task, propertyName, newValue) => {
@@ -127,10 +149,18 @@ const TaskList = () => {
             editedTask[propertyName] = newValue;
         }
         dispatch(addTask(editedTask));
-        setPageKey(pageKey+1);
         
-        handleGoBack();
-        setTimeout(()=> navigate(`/task-list/${data.id}`));
+        reloadData(data.id);
+    }
+
+    const handleClickDeleteTask = (task) => {
+        if (task.id) {
+            const editedTask = {...task};
+            editedTask.taskListId = taskList.id;
+            dispatch(deleteTask(editedTask));
+            
+            reloadData(data.id);
+        }
     }
 
     return (
@@ -144,30 +174,31 @@ const TaskList = () => {
             <Input type="text" name="name" title="List Name" value={data.name} error={errorList} onChange={handleFieldChange} />
 
 
-            <form className="flex w-full justify-between items-end gap-5">
-                <Input type="text" name="taskTitle" title="New Task Title" placeholder="Type and press enter to add a new task."
-                    value={taskTitle}
-                    onChange={handleTaskTitleChange}
-                    error={errorTask}
-                    />
-                <Button type="submit" title="Add Task" styleType="primary" className="w-24" onClick={handleAddTask} />
-            </form>
+            {
+                taskList?.id &&
+                <>
+                    <form className="flex w-full justify-between items-end gap-5">
+                        <Input type="text" name="taskTitle" title="New Task" placeholder="Type and press enter to add a new task."
+                            value={taskTitle}
+                            onChange={handleTaskTitleChange}
+                            error={errorTask}
+                            />
+                        <Button type="submit" title="Add Task" styleType="primary" className="w-24" onClick={handleAddTask} />
+                    </form>
 
+                    <div className="w-full">
+                        * My Tasks
+                        <TaskDetail tasks={data.tasks} status="inProgress" handleClickUpdateTask={handleClickUpdateTask} handleSelectTask={handleSelectTask} handleClickDeleteTask={handleClickDeleteTask} />
+                        <TaskDetail tasks={data.tasks} status="todo" handleClickUpdateTask={handleClickUpdateTask} handleSelectTask={handleSelectTask} handleClickDeleteTask={handleClickDeleteTask} />
+                        <TaskDetail tasks={data.tasks} status="done" handleClickUpdateTask={handleClickUpdateTask} handleSelectTask={handleSelectTask} handleClickDeleteTask={handleClickDeleteTask} />
+                    </div>
+                </>
+            }
 
-
-            <div key={pageKey} className="w-full">
-                * My Tasks
-                {/* <ul>
-                    <li className="flex justify-between items-center m-2 px-2 bg-gray-100 font-bold">
-                        <div>Task Title</div>
-                        <div>Actions</div>
-                    </li>
-                </ul> */}
-                <TaskDetail key={`InProgress`+pageKey} tasks={data.tasks} status="inProgress" handleClickUpdateTask={handleClickUpdateTask} handleSelectTask={handleSelectTask} />
-                <TaskDetail key={`Todo`+pageKey} tasks={data.tasks} status="todo" handleClickUpdateTask={handleClickUpdateTask} handleSelectTask={handleSelectTask} />
-                <TaskDetail key={`Done`+pageKey} tasks={data.tasks} status="done" handleClickUpdateTask={handleClickUpdateTask} handleSelectTask={handleSelectTask} />
-            </div>
-
+            {
+                data.id &&
+                <Button title="Delete" type="button" styleType="danger" className="flex-1" onClick={handleClickDelete} />
+            }
             <Button title="Save" type="submit" styleType="primary" className="flex-1" onClick={handleClickSave} />
         </form>
     )

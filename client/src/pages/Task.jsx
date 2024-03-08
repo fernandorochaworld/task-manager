@@ -6,7 +6,7 @@ import { setTest } from "../reducers/testReducer";
 import { useState } from "react";
 import Select from "../components/Select";
 import Textarea from "../components/Textarea";
-import { addTask } from "../reducers/taskManagerReducer";
+import { addTask, deleteTask } from "../reducers/taskManagerReducer";
 
 
 const Task = () => {
@@ -36,6 +36,15 @@ const Task = () => {
         editedTask.taskListId = taskListId;
         dispatch(addTask(editedTask));
         handleGoBack();
+    }
+
+    const handleClickDeleteTask = () => {
+        if (data.id) {
+            const editedTask = {...data};
+            editedTask.taskListId = taskListId;
+            dispatch(deleteTask(editedTask));
+            handleGoBack();
+        }
     }
 
     function handleFieldChange(e) {
@@ -70,7 +79,7 @@ const Task = () => {
 
             <Textarea name="description" title="Description" value={data.description} onChange={handleFieldChange} />
 
-            <Button title="Delete" className="flex-1" styleType="danger" onClick={handleGoBack} />
+            <Button title="Delete" className="flex-1" styleType="danger" onClick={handleClickDeleteTask} />
             <Button title="Save" type="submit" className="flex-1" styleType="primary" onClick={handleClickSave} />
         </form>
     )
