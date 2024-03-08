@@ -10,7 +10,7 @@ export default () => {
     router.use('/api/login', loginRouter);
     router.use('/api/person', personRouter);
     router.use('/api/person', tasklistRouter);
-    router.use('/api/task', taskRouter);
+    router.use('/api/person', taskRouter);
 
     router.all('*', (req, res) => {
         return res.status(404).json({ message: 'Service not found.' }).end();
