@@ -32,7 +32,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 try {
     await dbConnect();
 
-    app.use('/api', routers());
+    app.use(routers());
     app.listen(PORT, () => console.log(`Server is listening on http://localhost:${PORT}`));
 } catch (e) {
     console.log(e.message);
