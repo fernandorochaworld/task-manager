@@ -6,6 +6,7 @@ import compression from 'compression';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { dbConnect } from './config/db.js';
+import routers from './routers/routers.js';
 // import mongoose from 'mongoose';
 // import router from './router';
 
@@ -30,6 +31,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 try {
     await dbConnect();
+
+    app.use('/api', routers());
     app.listen(PORT, () => console.log(`Server is listening on http://localhost:${PORT}`));
 } catch (e) {
     // console.log(e.message);
@@ -39,4 +42,3 @@ try {
 // mongoose.connect(MONGO_URL);
 // mongoose.connection.on('error', (error) => {console.log(error)})
 
-// app.use('/api', router());
