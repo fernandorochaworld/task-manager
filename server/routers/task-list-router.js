@@ -1,12 +1,12 @@
-const express = require('express')
-const tasklistRouter = express.Router()
+import express from 'express'
+import tasklistRouter from express.Router()
 
 /**
  * Import mongoose models
  */
-const Person = require('../models/person')
-const TaskList = require('../models/tasklist')
-const Task = require('../models/task')
+import Person from '../models/person'
+import TaskList from '../models/tasklist'
+import Task from '../models/task'
 
 
 tasklistRouter.get('/', async (request, response) => {
@@ -73,4 +73,4 @@ tasklistRouter.delete('/:id', async (request, response) => {
 })
 
 
-module.exports = tasklistRouter
+export default tasklistRouter
