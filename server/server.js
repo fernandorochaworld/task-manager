@@ -7,6 +7,9 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { dbConnect } from './config/db.js';
 import routers from './routers/routers.js';
+
+import morgan from 'morgan';
+
 // import mongoose from 'mongoose';
 // import router from './router';
 
@@ -28,6 +31,14 @@ app.use(cookieParser());
 // app.use(bodyParser.json());
 app.use(bodyParser.json()); //utilizes the body-parser package
 app.use(bodyParser.urlencoded({ extended: true }));
+
+morgan.token('req-body', (req) => JSON.stringify(req.body));
+app.use(
+  morgan(
+    ':method :url :status :res[content-length] - :response-time ms :req-body'
+  )
+);
+
 
 try {
     await dbConnect();
