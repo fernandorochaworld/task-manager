@@ -1,10 +1,10 @@
-import { redirect, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import { useDispatch, useSelector } from "react-redux";
 import { addTask, addTaskList, deleteTask, deleteTaskList } from "../reducers/taskManagerReducer";
 import { useState } from "react";
-import TaskDetail from "./TaskDetails";
+import TaskDetail from "../components/TaskDetails";
 
 const taskListInitialData = {
     id: '',
@@ -59,7 +59,7 @@ const TaskList = () => {
 
     const reloadData = (taskListId) => {
         handleGoBack();
-        setTimeout(()=> navigate(`/task-list/${taskListId}`));
+        setTimeout(() => navigate(`/task-list/${taskListId}`));
     }
 
     const handleClickSave = (e) => {
@@ -71,7 +71,7 @@ const TaskList = () => {
             return;
         }
         setErrorList(null);
-        
+
         const newTaskList = {
             ...data,
             id: data.id || data.name
@@ -93,11 +93,11 @@ const TaskList = () => {
         e.preventDefault();
 
         if (data.id) {
-            
+
             const confirmation = confirm(`Are you sure to remove this task list "${data.name}"?`);
             if (confirmation) {
                 setErrorList(null);
-        
+
                 dispatch(deleteTaskList(data));
                 handleGoBack();
             }
@@ -133,14 +133,14 @@ const TaskList = () => {
         newList.id = newList.id || newList.name;
         setData(newList);
         setTaskTitle('');
-        
+
         //Save TaskList
         dispatch(addTaskList(newList));
         // reloadData(data.id);
     }
 
     const handleClickUpdateTask = (task, propertyName, newValue) => {
-        const editedTask = {...task};
+        const editedTask = { ...task };
         const levels = {
             high: 'low',
             medium: 'high',
@@ -153,19 +153,19 @@ const TaskList = () => {
             editedTask[propertyName] = newValue;
         }
         dispatch(addTask(editedTask));
-        
+
         reloadData(data.id);
     }
 
     const handleClickDeleteTask = (task) => {
         if (task.id) {
-            
+
             const confirmation = confirm(`Are you sure to remove this task "${task.title}"?`);
             if (confirmation) {
-                const editedTask = {...task};
+                const editedTask = { ...task };
                 editedTask.taskListId = taskList.id;
                 dispatch(deleteTask(editedTask));
-                
+
                 reloadData(data.id);
             }
         }
@@ -190,7 +190,7 @@ const TaskList = () => {
                             value={taskTitle}
                             onChange={handleTaskTitleChange}
                             error={errorTask}
-                            />
+                        />
                         <Button type="submit" title="Add Task" styleType="primary" className="w-24" onClick={handleAddTask} />
                     </form>
 

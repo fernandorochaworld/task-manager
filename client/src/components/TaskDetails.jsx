@@ -1,8 +1,8 @@
 import { useState } from "react";
-import Button from "../components/Button";
+import Button from "./Button";
 
 
-const TaskDetail = ({tasks, status, handleClickUpdateTask, handleSelectTask, handleClickDeleteTask}) => {
+const TaskDetail = ({ tasks, status, handleClickUpdateTask, handleSelectTask, handleClickDeleteTask }) => {
 
     const levelSettings = {
         inProgress: ['text-orange-600', 'bg-orange-50', 'In Progress'],
@@ -34,18 +34,18 @@ const TaskDetail = ({tasks, status, handleClickUpdateTask, handleSelectTask, han
             {tasksStatus.map(task => (
                 <li
                     key={task.id}
-                    
+
                     className={`flex justify-between items-center my-1 px-2 ${bgColor}`}
                     onMouseOver={() => handleMouseOverTask(task)}
                     onMouseOut={() => handleMouseOutTask(task)}
-                    >
+                >
 
                     <div className="w-full flex items-center">
                         <div className="grow">{task.title}</div>
                         <div className="flex shrink items-center text-xs">
-                            {task.priority !== 'low' ? <span style={{textTransform:'capitalize'}}>{`${task.priority} priority. `}</span>: ''}
-                            {task.dueDate ? `Due ${task.dueDate}. `: ''}
-                            
+                            {task.priority !== 'low' ? <span style={{ textTransform: 'capitalize' }}>{`${task.priority} priority. `}</span> : ''}
+                            {task.dueDate ? `Due ${task.dueDate}. ` : ''}
+
                             {
                                 ['inProgress', 'todo'].includes(status) && (overTask === task) &&
                                 <>
@@ -54,11 +54,11 @@ const TaskDetail = ({tasks, status, handleClickUpdateTask, handleSelectTask, han
                                 </>
                             }
                             {
-                                status ==='todo' &&
+                                status === 'todo' &&
                                 <Button className="w-9 me-2" text="🚀" title="Start task" styleType="transparent" onClick={() => handleClickUpdateTask(task, 'status', 'inProgress')}></Button>
                             }
                             {
-                                status ==='inProgress' &&
+                                status === 'inProgress' &&
                                 <Button className="w-9 me-2" text="✔️" title="Finish task" styleType="transparent" onClick={() => handleClickUpdateTask(task, 'status', 'done')}></Button>
                             }
                             <Button className="w-9" text="✏️" title="Edit task" styleType="transparent" onClick={() => handleSelectTask(task)}></Button>

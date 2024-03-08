@@ -32,7 +32,7 @@ const Task = () => {
 
         // dispatch(action);
         // alert('here');
-        const editedTask = {...data};
+        const editedTask = { ...data };
         editedTask.taskListId = taskListId;
         dispatch(addTask(editedTask));
         handleGoBack();
@@ -42,7 +42,7 @@ const Task = () => {
         if (data.id) {
             const confirmation = confirm(`Are you sure to remove this task "${data.title}"?`);
             if (confirmation) {
-                const editedTask = {...data};
+                const editedTask = { ...data };
                 editedTask.taskListId = taskListId;
                 dispatch(deleteTask(editedTask));
                 handleGoBack();
@@ -75,9 +75,17 @@ const Task = () => {
             <div className="flex w-full gap-5">
                 <Input type="date" name="dueDate" title="Due Date" value={data.dueDate} onChange={handleFieldChange} />
 
-                <Select name="priority" title="Priority" value={data.priority} options={{ high: 'High', medium: 'Medium', low: 'Low' }} onChange={handleFieldChange} />
+                <Select name="priority" title="Priority"
+                    value={data.priority}
+                    options={{ high: 'High', medium: 'Medium', low: 'Low' }}
+                    onChange={handleFieldChange}
+                />
 
-                <Select name="status" title="status" value={data.status} options={{ todo: 'Todo', inProgress: 'In Progress', done: 'Done' }} onChange={handleFieldChange} />
+                <Select name="status" title="status"
+                    value={data.status}
+                    options={{ todo: 'Todo', inProgress: 'In Progress', done: 'Done' }}
+                    onChange={handleFieldChange}
+                />
             </div>
 
             <Textarea name="description" title="Description" value={data.description} onChange={handleFieldChange} />
@@ -86,6 +94,7 @@ const Task = () => {
                 data.id &&
                 <Button title="Delete" className="flex-1" styleType="danger" onClick={handleClickDeleteTask} />
             }
+            
             <Button title="Save" type="submit" className="flex-1" styleType="primary" onClick={handleClickSave} />
         </form>
     )

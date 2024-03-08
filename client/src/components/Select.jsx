@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 
-const Select = ({name, title, value, className, disabled, onChange, options}) => {
-  
+const Select = ({ name, title, value, className, disabled, onChange, options }) => {
+
   const [, setVal] = useState(value || '');
 
   function handleChange(e) {
@@ -15,7 +15,11 @@ const Select = ({name, title, value, className, disabled, onChange, options}) =>
     <div className="w-full">
       <label htmlFor={name} className="block text-sm font-medium leading-6 text-gray-900">{title}</label>
       <div className="mt-2">
-        <select id={name} name={name} value={value} required className={myClass} disabled={(disabled)? 'disabled' : ''} onChange={handleChange}>
+        <select id={name} name={name} value={value} required
+          className={myClass}
+          disabled={(disabled) ? 'disabled' : ''}
+          onChange={handleChange}
+        >
           {options && Object.entries(options).map(([key, value]) => (
             <option key={key} value={key}>{value}</option>
           ))}
