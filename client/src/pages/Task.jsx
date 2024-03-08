@@ -40,10 +40,13 @@ const Task = () => {
 
     const handleClickDeleteTask = () => {
         if (data.id) {
-            const editedTask = {...data};
-            editedTask.taskListId = taskListId;
-            dispatch(deleteTask(editedTask));
-            handleGoBack();
+            const confirmation = confirm(`Are you sure to remove this task "${data.title}"?`);
+            if (confirmation) {
+                const editedTask = {...data};
+                editedTask.taskListId = taskListId;
+                dispatch(deleteTask(editedTask));
+                handleGoBack();
+            }
         }
     }
 
@@ -79,7 +82,10 @@ const Task = () => {
 
             <Textarea name="description" title="Description" value={data.description} onChange={handleFieldChange} />
 
-            <Button title="Delete" className="flex-1" styleType="danger" onClick={handleClickDeleteTask} />
+            {
+                data.id &&
+                <Button title="Delete" className="flex-1" styleType="danger" onClick={handleClickDeleteTask} />
+            }
             <Button title="Save" type="submit" className="flex-1" styleType="primary" onClick={handleClickSave} />
         </form>
     )

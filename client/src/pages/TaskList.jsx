@@ -93,10 +93,14 @@ const TaskList = () => {
         e.preventDefault();
 
         if (data.id) {
-            setErrorList(null);
-    
-            dispatch(deleteTaskList(data));
-            handleGoBack();
+            
+            const confirmation = confirm(`Are you sure to remove this task list "${data.name}"?`);
+            if (confirmation) {
+                setErrorList(null);
+        
+                dispatch(deleteTaskList(data));
+                handleGoBack();
+            }
         }
     }
 
@@ -155,11 +159,15 @@ const TaskList = () => {
 
     const handleClickDeleteTask = (task) => {
         if (task.id) {
-            const editedTask = {...task};
-            editedTask.taskListId = taskList.id;
-            dispatch(deleteTask(editedTask));
             
-            reloadData(data.id);
+            const confirmation = confirm(`Are you sure to remove this task "${task.title}"?`);
+            if (confirmation) {
+                const editedTask = {...task};
+                editedTask.taskListId = taskList.id;
+                dispatch(deleteTask(editedTask));
+                
+                reloadData(data.id);
+            }
         }
     }
 
