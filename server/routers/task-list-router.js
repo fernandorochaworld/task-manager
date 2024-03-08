@@ -81,12 +81,11 @@ tasklistRouter.put('/:personId/tasklist/:id', async (request, response) => {
     response.status(201).send(savedTaskList)
 })
 
-tasklistRouter.delete('/:personId/tasklist/:id', async (request, response) => {
+tasklistRouter.delete('/:person_id/tasklist/:_id', async (request, response) => {
     // Get fields
-    const id = request.params.id
-    const { personId } = request.body
+    const {_id, person_id} = request.params
     // Check if the person exists
-    const person = await Person.findById(personId)
+    const person = await Person.findById(person_id)
     if (!person) {
         return response.status(400).send({
             error: 'no such person exists to remove the tasklist from'
@@ -97,12 +96,12 @@ tasklistRouter.delete('/:personId/tasklist/:id', async (request, response) => {
     // person.tasklists = person.tasklists.filter(id => id.toJSON() !== tasklistId)
     // await person.save()
     // Remove the tasks
-    await Task.find({tasklist_id: id}).remove();
+    await Task.find({tasklist_id: _id}).deleteMany();
     // const taskIds = (await TaskList.findById(tasklistId)).tasks.map(id => id.toJSON())
     // await Promise.all(taskIds.map(id => Task.findByIdAndDelete(id)))
     // Remove the tasklist
     // await TaskList.findByIdAndDelete(id)
-    await tasklist.remove();
+    await tasklist.deleteOne();
     // Return response
     response.status(204).send()
 })

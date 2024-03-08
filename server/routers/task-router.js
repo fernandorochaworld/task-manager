@@ -8,26 +8,21 @@ import Task from '../models/task.js'
 
 const taskRouter = express.Router()
 
-taskRouter.get('/about', async (request, response) => {
-    response.json({
-        message: 'First endpoint for tasks router'
-    })
-})
-
-taskRouter.get('/', async (request, response) => {
-    const tasks = await Task.find()
+taskRouter.get('/:personId/tasklist/:tasklistId/task', async (request, response) => {
+    const tasklist_id = request.params.tasklistId
+    const tasks = await Task.find({tasklist_id})
     response.json(tasks)
 })
 
-taskRouter.get('/:id', async (request, response) => {
-    const id = request.params.id
-    const task = await Task.findById(id)
+taskRouter.get('/:personId/tasklist/:tasklistId/task/:id', async (request, response) => {
+    const {id: _id, tasklistId: tasklist_id} = request.params
+    const task = await Task.findOne({_id, tasklist_id})
     response.json(task)
 })
 
-taskRouter.post('/:id', async (request, response) => {
+taskRouter.post('/:personId/tasklist/:tasklistId/task', async (request, response) => {
     // Get fields
-    const tasklistId = request.params.id
+    const {tasklistId, personId} = request.params;
     const { title, description, status, priority, dueDate } = request.body
     // Error handling
     if (!title || !status || !priority || !dueDate) {
@@ -44,23 +39,22 @@ taskRouter.post('/:id', async (request, response) => {
     }
     // Create the task and save it 
     const task = new Task({
-        title, description, status, priority, dueDate
+        title, description, status, priority, dueDate, tasklist_id: tasklistId
     })
     const savedTask = await task.save()
     // Add the task to the tasklist, and save that!
-    tasklist.tasks = tasklist.tasks.concat(savedTask._id)
-    await tasklist.save()
+    // tasklist.tasks = tasklist.tasks.concat(savedTask._id)
+    // await tasklist.save()
     // Return the saved task
     return response.status(201).json(savedTask)
 })
 
-taskRouter.put('/:id', async (request, response) => {
+taskRouter.put('/:person_id/tasklist/:tasklist_id/task/:_id', async (request, response) => {
     // Get fields
-    const taskId = request.params.id
+    const {tasklist_id, person_id, _id} = request.params;
 
-    const task = await Task.findById(id)
+    const task = await Task.findOne({_id, tasklist_id})
 
-    const tasklistId = request.params.taskListId
     const { title, description, status, priority, dueDate } = request.body
     // Error handling
     if (!title || !status || !priority || !dueDate) {
@@ -69,7 +63,7 @@ taskRouter.put('/:id', async (request, response) => {
         })
     }
     // Get tasklist
-    const tasklist = await TaskList.findById(tasklistId)
+    const tasklist = await TaskList.findOne({_id: tasklist_id, person_id})
     if (!tasklist) {
         return response.status(400).send({
             error: 'no such tasklist exists to add the task to'
@@ -93,22 +87,19 @@ taskRouter.put('/:id', async (request, response) => {
     return response.status(201).json(savedTask)
 })
 
-taskRouter.delete('/:id', async (request, response) => {
-    // Get fields
-    const taskId = request.params.id
-    const { tasklistId } = request.body
-    // Check if the tasklist exists
-    const tasklist = await TaskList.findById(tasklistId)
-    if (!tasklist) {
+taskRouter.delete('/:person_id/tasklist/:tasklist_id/task/:_id', async (request, response) => {
+    const {tasklist_id, person_id, _id} = request.params;
+
+    const task = await Task.findOne({_id, tasklist_id})
+    if (!task) {
         return response.status(400).send({
-            error: 'no such tasklist exists to remove the task from'
+            error: 'Task not found'
         })
     }
+
     // Remove the task
-    await Task.findByIdAndDelete(taskId)
-    // Update the tasklist
-    tasklist.tasks = tasklist.tasks.filter(id => id.toJSON() !== taskId)
-    await tasklist.save()
+    await task.deleteOne();
+    
     // Return response
     response.status(204).send()
 })

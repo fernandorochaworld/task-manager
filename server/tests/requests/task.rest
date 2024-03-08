@@ -3,44 +3,45 @@ GET http://localhost:3001
 
 
 ### Get List
-GET http://localhost:3001/api/task
+GET http://localhost:3001/api/person/65eb266c28ba2924d6117370/tasklist/65eb29faef4f5956065e7235/task
 
 
 ### Get record
-GET http://localhost:3001/api/task/1
+GET http://localhost:3001/api/person/65eb266c28ba2924d6117370/tasklist/65eb29faef4f5956065e7235/task/65eb3838845b612161bcf8d3
 
-
-
-### Get record not found
-GET http://localhost:3001/api/task/3
 
 
 ### Not Found URL
-GET http://localhost:3001/api/not-found-url
+GET http://localhost:3001/api/person/65eb266c28ba2924d6117370/tasklist/65eb29faef4f5956065e7235/not-found-url
 
 
-
-### Post task - Validation check
-POST http://localhost:3001/api/task
-Content-Type: application/json
-
-{
-}
 
 ### Post task
-POST http://localhost:3001/api/task
+POST http://localhost:3001/api/person/65eb266c28ba2924d6117370/tasklist/65eb29faef4f5956065e7235/task
 Content-Type: application/json
 
 {
-    "taskCode": "BRL",
-    "conversionRate": 3.7,
-    "countryId": 1
+    "title": "Task 2",
+    "description": "My Task 1",
+    "status": "todo",
+    "priority": "low",
+    "dueDate": "2024-10-10"
 }
 
+
 ### PUT task
-PUT http://localhost:3001/api/task/2/0.9876
+PUT http://localhost:3001/api/person/65eb266c28ba2924d6117370/tasklist/65eb29faef4f5956065e7235/task/65eb3838845b612161bcf8d3
+Content-Type: application/json
+
+{
+    "title": "Task 11",
+    "description": "My Task 11",
+    "status": "done",
+    "priority": "high",
+    "dueDate": "2024-10-11"
+}
 
 
 ### DELETE task
-DELETE http://localhost:3001/api/task/2
+DELETE http://localhost:3001/api/person/65eb266c28ba2924d6117370/tasklist/65eb29faef4f5956065e7235/task/65eb3838845b612161bcf8d3
 
