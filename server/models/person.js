@@ -4,16 +4,22 @@ import { collectionTransformation } from "../utils/mongoose-utils.js";
 const PersonSchema = new mongoose.Schema({
     name: { type: String, required: true },
     passwordHash: { type: String, required: true },
-    tasklists: [
-        {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: 'task-list'
-        }
-      ]
+    // tasklists: [
+    //     {
+    //       type: mongoose.Schema.Types.ObjectId,
+    //       ref: 'task-list'
+    //     }
+    //   ]
 });
 
+PersonSchema.virtual('tasklists', {
+    ref: 'tasklist',
+    localField: '_id',
+    foreignField: 'person_id'
+});
 
 PersonSchema.set('toJSON', {
+    virtuals: true,
     transform: (document, returnedObject) => {
         collectionTransformation(document, returnedObject);
         delete returnedObject.passwordHash;

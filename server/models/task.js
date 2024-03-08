@@ -7,6 +7,10 @@ const TaskSchema = new mongoose.Schema({
     priority: { type: String, required: true },
     status: { type: String, required: true },
     dueDate: { type: Date },
+    tasklist_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'tasklist'
+    }
 });
 
 
