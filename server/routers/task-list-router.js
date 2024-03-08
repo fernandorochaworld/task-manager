@@ -1,13 +1,13 @@
 import express from 'express'
-import tasklistRouter from express.Router()
 
 /**
  * Import mongoose models
  */
-import Person from '../models/person'
-import TaskList from '../models/tasklist'
-import Task from '../models/task'
+import Person from '../models/person.js'
+import TaskList from '../models/task-list.js'
+import Task from '../models/task.js'
 
+const tasklistRouter = express.Router()
 
 tasklistRouter.get('/', async (request, response) => {
     const tasklists = await TaskList.find({})

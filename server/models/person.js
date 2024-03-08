@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { collectionTransformation } from "../utils/mongoose-utils";
+import { collectionTransformation } from "../utils/mongoose-utils.js";
 
 const PersonSchema = new mongoose.Schema({
     name: { type: String, required: true },
@@ -20,7 +20,7 @@ PersonSchema.set('toJSON', {
     }
 });
 
-export const PersonModel = mongoose.model('person', PersonSchema);
+export default mongoose.model('person', PersonSchema);
 
 // export const getPersons = () => PersonModel.find();
 // export const getPersonByName = (name) => PersonModel.findOne({ name });

@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { collectionTransformation } from "../utils/mongoose-utils.js";
 
 const TaskSchema = new mongoose.Schema({
     title: { type: String, required: true },
@@ -13,4 +14,4 @@ TaskSchema.set('toJSON', {
     transform: collectionTransformation
 });
 
-export const TaskModel = mongoose.model('task', TaskSchema);
+export default mongoose.model('task', TaskSchema);

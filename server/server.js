@@ -35,7 +35,7 @@ try {
     app.use('/api', routers());
     app.listen(PORT, () => console.log(`Server is listening on http://localhost:${PORT}`));
 } catch (e) {
-    // console.log(e.message);
+    console.log(e.message);
 }
 
 // mongoose.Promise = Promise;

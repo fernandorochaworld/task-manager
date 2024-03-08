@@ -1,13 +1,14 @@
 import bcrypt from 'bcryptjs'
 import express from 'express'
-import personRouter from  express.Router()
 
 /**
  * Import mongoose models
  */
-import Person from '../models/person'
-import TaskList from '../models/tasklist'
-import Task from '../models/task'
+import Person from '../models/person.js'
+import TaskList from '../models/task-list.js'
+import Task from '../models/task.js'
+
+const personRouter =  express.Router()
 
 /**
  * @receives a GET request to the URL: http://localhost:3001/api/people/about
