@@ -11,6 +11,7 @@ import {
 import TaskList from './pages/TaskList';
 import Task from './pages/Task';
 import TaskListIndex from './pages/TaskListIndex';
+import LoginPage from './pages/Login';
 
 const App = () => {
   return (
@@ -37,6 +38,7 @@ const App = () => {
             renders the first one that matches the current URL.
             Furthermore, notice how the content above always renders? On each page? */}
         <Routes>
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/" element={<TaskListIndex />} />
           <Route path="/task-list/:id?" element={<TaskList />} />
           <Route path="/task-list/:taskListId/task/:taskId" element={<Task />} />

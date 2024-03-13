@@ -1,8 +1,7 @@
-import { redirect, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import { useDispatch, useSelector } from "react-redux";
-import { setTest } from "../reducers/testReducer";
 import { useState } from "react";
 import Select from "../components/Select";
 import Textarea from "../components/Textarea";
