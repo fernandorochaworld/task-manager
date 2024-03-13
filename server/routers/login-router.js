@@ -13,9 +13,15 @@ import Person from '../models/person.js'
  */
 loginRouter.post('/', async (request, response) => {
   // Get fields
-  const { name, password } = request.body
+  const { username, password } = request.body
+  // Error handling
+  if (!username || !password) {
+    return response.status(400).send({
+      error: 'please, provide username and password'
+    })
+  }
   // Get user
-  const person = await Person.findOne({ name })
+  const person = await Person.findOne({ username })
   // Check if password is correct
   const passwordCorrect = person === null ? false : await bcrypt.compare(password, person.passwordHash)
   // Person check

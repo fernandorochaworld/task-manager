@@ -8,7 +8,7 @@ import Person from '../models/person.js'
 import TaskList from '../models/task-list.js'
 import Task from '../models/task.js'
 
-const personRouter =  express.Router()
+const personRouter = express.Router()
 
 /**
  * @receives a GET request to the URL: http://localhost:3001/api/people/about
@@ -45,25 +45,25 @@ personRouter.get('/:id', async (request, response) => {
  */
 personRouter.post('/', async (request, response) => {
   // Get fields
-  const { name, password } = request.body
+  const { name, username, password } = request.body
   // Error handling
-  if (!name || !password) {
+  if (!name || !username || !password) {
     return response.status(400).send({
       error: 'missing content in body'
     })
   }
   // Check if person already exists
-  const duplicateCount = await Person.countDocuments({ name }).exec()
+  const duplicateCount = await Person.countDocuments({ username }).exec()
   if (duplicateCount !== 0) {
     return response.status(400).send({
-      error: 'name not available'
+      error: 'username not available'
     })
   }
   // Perform hash
   const passwordHash = await bcrypt.hash(password, 10)
   // Create new person
   const person = new Person({
-    name, passwordHash
+    name, username, passwordHash
   })
   // Update people and return resource
   const personResponse = await person.save()
