@@ -63,7 +63,7 @@ const Task = () => {
     return (
         <form className="flex flex-wrap gap-5">
             <div className="flex flex-1 justify-between">
-                <h1 className="tm-title text-start">
+                <h1 className="tm-title-2 text-start">
                     Task
                 </h1>
                 <Button title="x" className="w-12" styleType="transparent" onClick={handleGoBack} />

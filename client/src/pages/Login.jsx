@@ -1,8 +1,16 @@
+import { useDispatch, useSelector } from "react-redux";
 import Button from "../components/Button";
 import Input from "../components/Input";
+import { setUser, setTaskListIndex } from "../reducers/taskManagerReducer";
+import loginService from "../services/login-service";
+import userService from "../services/user-service";
+import tasklistService from "../services/tasklist-service";
 
 
-const LoginPage = ({ user, onLogin, onCreate, onLogout }) => {
+const LoginPage = () => {
+
+    const user = useSelector(state => state.taskManager.user);
+    const dispatch = useDispatch();
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -22,8 +30,30 @@ const LoginPage = ({ user, onLogin, onCreate, onLogout }) => {
         }
     }
 
-    function handleGoBack() {
+    const handleGoBack = () => {
         navigate(`/task-list/${taskListId}`);
+    }
+
+    const onLogin = (user) => {
+        loginService.loginUser(user)
+            .then( user => {
+                dispatch(setUser(user))
+            })
+            .catch(error => console.log(error));
+    }
+
+    const onCreate = (user) => {
+        userService.createUser(user)
+            .then( response => dispatch(setUser(response)))
+            .catch(error => console.log(error));
+    }
+
+    const onLogout = () => {
+        dispatch(setUser(null));
+    }
+
+    const onTest = () => {
+        dispatch(setUser({username: 'testaaa', id: 'aaa'}));
     }
 
 
@@ -36,8 +66,11 @@ const LoginPage = ({ user, onLogin, onCreate, onLogout }) => {
                         <Button title="Logout" styleType="primary" onClick={onLogout} />
                     </div>
                     : <form onSubmit={handleSubmit} className="flex flex-wrap gap-5">
+                        {
+                            user && <p><strong>{user.username}</strong> is logged in</p>
+                        }
                         <div className="flex flex-1 justify-between">
-                            <h1 className="tm-title text-start">
+                            <h1 className="tm-title-2 text-start">
                                 Login
                             </h1>
                             <Button title="x" className="w-12" styleType="transparent" onClick={handleGoBack} />
@@ -46,6 +79,7 @@ const LoginPage = ({ user, onLogin, onCreate, onLogout }) => {
                         <Input type="text" name="username" title="User Name" />
                         <Input type="password" name="password" title="Password" />
 
+                        <Button title="Set User" onClick={onTest} />
                         <Button title="Login" type="submit" styleType="primary" value="login" />
                         <Button title="Create" type="submit" styleType="primary" value="create" />
                     </form>

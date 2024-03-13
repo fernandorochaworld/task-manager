@@ -1,5 +1,5 @@
 import axios from 'axios';
-const baseUrl = '/api/login';
+const baseUrl = `${import.meta.env.VITE_API_URL}/login`;
 
 const loginUser = (user) => {
     const request = axios.post(baseUrl, user);

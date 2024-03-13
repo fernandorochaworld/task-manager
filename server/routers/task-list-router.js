@@ -15,6 +15,12 @@ tasklistRouter.get('/:personId/tasklist', async (request, response) => {
     response.json(tasklists)
 })
 
+tasklistRouter.get('/:personId/tasklist/full', async (request, response) => {
+    const person_id = request.params.personId
+    const tasklists = await TaskList.find({person_id}).populate(['tasks']);
+    response.json(tasklists)
+})
+
 tasklistRouter.get('/:personId/tasklist/:id', async (request, response) => {
     const _id = request.params.id
     const person_id = request.params.personId

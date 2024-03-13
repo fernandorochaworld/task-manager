@@ -8,30 +8,37 @@ import { createSlice } from '@reduxjs/toolkit';
 const orderTaskFn = (a, b) => a.title.localeCompare(b.title);
 
 const initialState = {
-  selectedTask: null,
-  selectedTaskList: null,
-  taskListIndex: [
-    {
-      id: 'sprint1',
-      name: 'Sprint 1',
-      tasks: [
-        {
-          id: 'task1',
-          title: 'task1',
-          description: 'My task 1',
-          priority: 'high',
-          status: 'todo',
-          dueDate: new Date().toJSON(),
-        }
-      ]
-    }
-  ],
+  user: null,
+  taskListIndex: null,
+  // taskListIndex: [
+  //   {
+  //     id: 'sprint1',
+  //     name: 'Sprint 1',
+  //     tasks: [
+  //       {
+  //         id: 'task1',
+  //         title: 'task1',
+  //         description: 'My task 1',
+  //         priority: 'high',
+  //         status: 'todo',
+  //         dueDate: new Date().toJSON(),
+  //       }
+  //     ]
+  //   }
+  // ],
 }
 
 const slice = createSlice({
   name: 'taskManager',
   initialState,
   reducers: {
+    setUser(state, action) {
+      state.user = action.payload;
+    },
+    setTaskListIndex(state, action) {
+      state.taskListIndex = action.payload;
+    },
+    
     addTaskList(state, action) {
       console.log('received action: ', action)
       console.log('updating state to ...', action.payload)
@@ -87,6 +94,8 @@ const slice = createSlice({
 })
 
 export const {
+  setUser,
+  setTaskListIndex,
   addTaskList,
   deleteTaskList,
   addTask,

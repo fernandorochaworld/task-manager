@@ -12,14 +12,33 @@ import TaskList from './pages/TaskList';
 import Task from './pages/Task';
 import TaskListIndex from './pages/TaskListIndex';
 import LoginPage from './pages/Login';
+import { useDispatch, useSelector } from 'react-redux';
+import { setUser } from './reducers/taskManagerReducer';
 
 const App = () => {
+  
+  const user = useSelector(state => state.taskManager.user);
+  const dispatch = useDispatch();
+
   return (
     <Router>
       <div className="tm-container">
-        <h1 className="tm-title mb-8">
-          Task Manager
-        </h1>
+
+        <div className='flex flex-row justify-between items-center mb-8'>
+
+          <h1 className="tm-title-1">
+            Task Manager
+          </h1>
+
+          {
+            user &&
+            <span>
+              Logged in as <strong>{user.username}</strong>.
+              <a onClick={() => dispatch(setUser(null))} href="#" className="font-medium text-blue-600 dark:text-blue-500 ms-3">Logout</a>
+            </span>
+          }
+          
+        </div>
 
 
         {/* <nav>
@@ -38,10 +57,15 @@ const App = () => {
             renders the first one that matches the current URL.
             Furthermore, notice how the content above always renders? On each page? */}
         <Routes>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/" element={<TaskListIndex />} />
-          <Route path="/task-list/:id?" element={<TaskList />} />
-          <Route path="/task-list/:taskListId/task/:taskId" element={<Task />} />
+            {
+              !user
+              ? <Route path="/" element={<LoginPage />} />
+              : <>
+                <Route path="/" element={<TaskListIndex />} />
+                <Route path="/task-list/:id?" element={<TaskList />} />
+                <Route path="/task-list/:taskListId/task/:taskId" element={<Task />} />
+              </>
+            }
         </Routes>
       </div>
     </Router>

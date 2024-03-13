@@ -3,15 +3,19 @@ GET http://localhost:3001
 
 
 ### Get List
-GET http://localhost:3001/api/person/65eb266c28ba2924d6117370/tasklist
+GET http://localhost:3001/api/person/65f1fef9f30f58f28dd4e268/tasklist
+
+
+### Get List
+GET http://localhost:3001/api/person/65f1fef9f30f58f28dd4e268/tasklist/full
 
 
 ### Get record
-GET http://localhost:3001/api/person/65eb266c28ba2924d6117370/tasklist/65eb29faef4f5956065e7235
+GET http://localhost:3001/api/person/65f1fef9f30f58f28dd4e268/tasklist/65eb29faef4f5956065e7235
 
 
 ### Post tasklist
-POST http://localhost:3001/api/person/65eb266c28ba2924d6117370/tasklist/
+POST http://localhost:3001/api/person/65f1fef9f30f58f28dd4e268/tasklist/
 Content-Type: application/json
 
 {
@@ -19,7 +23,7 @@ Content-Type: application/json
 }
 
 ### PUT tasklist
-PUT http://localhost:3001/api/person/65eb266c28ba2924d6117370/tasklist/65eb29faef4f5956065e7235
+PUT http://localhost:3001/api/person/65f1fef9f30f58f28dd4e268/tasklist/65eb29faef4f5956065e7235
 Content-Type: application/json
 
 {
@@ -28,5 +32,5 @@ Content-Type: application/json
 
 
 ### DELETE tasklist
-DELETE http://localhost:3001/api/person/65eb266c28ba2924d6117370/tasklist/65eb29faef4f5956065e7235
+DELETE http://localhost:3001/api/person/65f1fef9f30f58f28dd4e268/tasklist/65eb29faef4f5956065e7235
 

@@ -174,7 +174,7 @@ const TaskList = () => {
     return (
         <form className="flex flex-wrap gap-5">
             <div className="flex flex-1 justify-between">
-                <h1 className="tm-title text-start">
+                <h1 className="tm-title-2 text-start">
                     Task List
                 </h1>
                 <Button text="X" title="Go to Index" className="w-12 text-bold" styleType="transparent" onClick={handleGoBack} />
@@ -195,7 +195,6 @@ const TaskList = () => {
                     </form>
 
                     <div className="w-full">
-                        * My Tasks
                         <TaskDetail tasks={data.tasks} status="inProgress" handleClickUpdateTask={handleClickUpdateTask} handleSelectTask={handleSelectTask} handleClickDeleteTask={handleClickDeleteTask} />
                         <TaskDetail tasks={data.tasks} status="todo" handleClickUpdateTask={handleClickUpdateTask} handleSelectTask={handleSelectTask} handleClickDeleteTask={handleClickDeleteTask} />
                         <TaskDetail tasks={data.tasks} status="done" handleClickUpdateTask={handleClickUpdateTask} handleSelectTask={handleSelectTask} handleClickDeleteTask={handleClickDeleteTask} />

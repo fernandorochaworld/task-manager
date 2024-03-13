@@ -14,8 +14,11 @@
     @apply mx-auto max-w-3xl px-4 sm:px-6 lg:px-8;
   }
 
-  .tm-title {
-    @apply text-3xl text-center font-bold;
+  .tm-title-1 {
+    @apply text-3xl font-bold;
+  }
+  .tm-title-2 {
+    @apply text-2xl font-bold;
   }
 
   .tm-btn-primary {
