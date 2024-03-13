@@ -45,9 +45,9 @@ personRouter.get('/:id', async (request, response) => {
  */
 personRouter.post('/', async (request, response) => {
   // Get fields
-  const { name, username, password } = request.body
+  const { username, password } = request.body
   // Error handling
-  if (!name || !username || !password) {
+  if (!username || !password) {
     return response.status(400).send({
       error: 'missing content in body'
     })
@@ -63,7 +63,7 @@ personRouter.post('/', async (request, response) => {
   const passwordHash = await bcrypt.hash(password, 10)
   // Create new person
   const person = new Person({
-    name, username, passwordHash
+    username, passwordHash
   })
   // Update people and return resource
   const personResponse = await person.save()

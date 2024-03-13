@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 import { collectionTransformation } from "../utils/mongoose-utils.js";
 
 const PersonSchema = new mongoose.Schema({
-    name: { type: String, required: true },
     username: { type: String, required: true },
     passwordHash: { type: String, required: true },
 });
