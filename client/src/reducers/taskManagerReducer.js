@@ -43,7 +43,7 @@ const slice = createSlice({
       console.log('received action: ', action)
       console.log('updating state to ...', action.payload)
       const taskList = { ...action.payload };
-      taskList.tasks = [...taskList.tasks];
+      taskList.tasks = [...taskList.tasks||[]];
       if (taskList.id) {
         state.taskListIndex = state.taskListIndex.filter(item => item.id !== taskList.id);
       }
@@ -65,12 +65,12 @@ const slice = createSlice({
       console.log('received action: ', action)
       console.log('updating state to ...', action.payload)
       const task = action.payload;
-      const taskList = state.taskListIndex.filter(item => item.id === task.taskListId)?.[0];
-      state.taskListIndex = state.taskListIndex.filter(item => item.id !== task.taskListId);
+      const taskList = state.taskListIndex.filter(item => item.id === task.tasklist_id)?.[0];
+      state.taskListIndex = state.taskListIndex.filter(item => item.id !== task.tasklist_id);
       if (taskList) {
         taskList.tasks = taskList.tasks.filter(item => item.id !== task.id);
       }
-      delete task.taskListId;
+      delete task.tasklist_id;
       taskList.tasks.push(task);
       taskList.tasks.sort(orderTaskFn);
       state.taskListIndex.push(taskList);
@@ -81,8 +81,8 @@ const slice = createSlice({
       console.log('received action: ', action)
       console.log('updating state to ...', action.payload)
       const task = {...action.payload};
-      const taskList = state.taskListIndex.filter(item => item.id === task.taskListId)?.[0];
-      state.taskListIndex = state.taskListIndex.filter(item => item.id !== task.taskListId);
+      const taskList = state.taskListIndex.filter(item => item.id === task.tasklist_id)?.[0];
+      state.taskListIndex = state.taskListIndex.filter(item => item.id !== task.tasklist_id);
       if (taskList) {
         taskList.tasks = taskList.tasks.filter(item => item.id !== task.id);
       }
