@@ -6,7 +6,7 @@ const TaskSchema = new mongoose.Schema({
     description: { type: String },
     priority: { type: String, required: true },
     status: { type: String, required: true },
-    dueDate: { type: Date },
+    dueDate: { type: String }, //Date
     tasklist_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'tasklist'

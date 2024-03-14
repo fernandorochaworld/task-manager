@@ -6,6 +6,7 @@ import { useState } from "react";
 import Select from "../components/Select";
 import Textarea from "../components/Textarea";
 import { addTask, deleteTask } from "../reducers/taskManagerReducer";
+import taskService from "../services/task-service";
 
 
 const Task = () => {
@@ -13,6 +14,7 @@ const Task = () => {
     const dispatch = useDispatch();
 
     const { taskListId, taskId } = useParams();
+    const user = useSelector(state => state.taskManager.user);
     const taskListIndex = useSelector(state => state.taskManager.taskListIndex);
     const task = taskListIndex.find(item => item.id == taskListId)?.tasks.find(task => task.id === taskId);
     // const task = useSelector(state => state.taskManager.taskListIndex.find(item => item.id == taskListId)?.tasks.find(task => task.id === taskId));
@@ -31,20 +33,25 @@ const Task = () => {
 
         // dispatch(action);
         // alert('here');
-        const editedTask = { ...data };
-        editedTask.taskListId = taskListId;
-        dispatch(addTask(editedTask));
-        handleGoBack();
+
+        taskService.editTask(user.id, taskListId, data.id, data).then( newTask => {
+            // const editedTask = { ...data };
+            // editedTask.taskListId = taskListId;
+            dispatch(addTask(newTask));
+            handleGoBack();
+        });
     }
 
     const handleClickDeleteTask = () => {
         if (data.id) {
             const confirmation = confirm(`Are you sure to remove this task "${data.title}"?`);
             if (confirmation) {
-                const editedTask = { ...data };
-                editedTask.taskListId = taskListId;
-                dispatch(deleteTask(editedTask));
-                handleGoBack();
+                taskService.deleteTask(user.id, task.tasklist_id, task.id).then( () => {
+                    // const editedTask = { ...data };
+                    // editedTask.taskListId = taskListId;
+                    dispatch(deleteTask(data));
+                    handleGoBack();
+                });
             }
         }
     }
