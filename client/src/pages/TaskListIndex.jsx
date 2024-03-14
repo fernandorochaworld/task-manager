@@ -9,9 +9,9 @@ const TaskListIndex = () => {
     const dispatch = useDispatch();
     const user = useSelector(state => state.taskManager.user);
     const taskListIndex = useSelector(state => state.taskManager.taskListIndex);
-    if (!taskListIndex) {
-        tasklistService.loadTaskList(user.id).then( tasklists => dispatch(setTaskListIndex(tasklists)))
-    }
+    // if (!taskListIndex) {
+    //     tasklistService.loadTaskList(user.id).then( tasklists => dispatch(setTaskListIndex(tasklists)))
+    // }
 
     function handleSelectTaskList(taskList) {
         navigate(`/task-list/${taskList.id}`);

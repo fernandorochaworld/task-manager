@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Select from "../components/Select";
 import Textarea from "../components/Textarea";
 import { addTask, deleteTask } from "../reducers/taskManagerReducer";
@@ -16,10 +16,14 @@ const Task = () => {
     const { taskListId, taskId } = useParams();
     const user = useSelector(state => state.taskManager.user);
     const taskListIndex = useSelector(state => state.taskManager.taskListIndex);
-    const task = taskListIndex.find(item => item.id == taskListId)?.tasks.find(task => task.id === taskId);
+    const task = taskListIndex?.find(item => item.id == taskListId)?.tasks.find(task => task.id === taskId) || null;
     // const task = useSelector(state => state.taskManager.taskListIndex.find(item => item.id == taskListId)?.tasks.find(task => task.id === taskId));
 
     const [data, setData] = useState(task);
+    
+    useEffect(() => {
+        setData(task)
+    }, [task]);
 
     // const testValue = useSelector(state => state.test);
 
@@ -68,6 +72,7 @@ const Task = () => {
     }
 
     return (
+        data &&
         <form className="flex flex-wrap gap-5">
             <div className="flex flex-1 justify-between">
                 <h1 className="tm-title-2 text-start">

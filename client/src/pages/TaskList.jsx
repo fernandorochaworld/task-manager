@@ -3,7 +3,7 @@ import Button from "../components/Button";
 import Input from "../components/Input";
 import { useDispatch, useSelector } from "react-redux";
 import { addTask, addTaskList, deleteTask, deleteTaskList } from "../reducers/taskManagerReducer";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TaskDetail from "../components/TaskDetails";
 import tasklistService from "../services/tasklist-service";
 import taskService from "../services/task-service";
@@ -23,7 +23,7 @@ const taskInitialData = {
 };
 
 const TaskList = () => {
-    const updateTaskList = (state) => state.taskManager.taskListIndex.find(item => item.id == id)
+    const updateTaskList = (state) => state.taskManager.taskListIndex?.find(item => item.id == id)
     const { id } = useParams();
     const taskList = useSelector(updateTaskList);
     const user = useSelector(state => state.taskManager.user);
@@ -34,6 +34,11 @@ const TaskList = () => {
     const [taskTitle, setTaskTitle] = useState('');
     const [errorTask, setErrorTask] = useState(null);
     const [errorList, setErrorList] = useState(null);
+
+    
+    useEffect(() => {
+        setData(taskList || taskListInitialData)
+    }, [taskList]);
 
     function handleGoBack() {
         navigate('/');
