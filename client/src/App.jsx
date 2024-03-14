@@ -14,14 +14,30 @@ import Task from './pages/Task';
 import TaskListIndex from './pages/TaskListIndex';
 import LoginPage from './pages/Login';
 import { useDispatch, useSelector } from 'react-redux';
-import { setUser } from './reducers/taskManagerReducer';
+import { setTaskListIndex, setUser } from './reducers/taskManagerReducer';
 import browserService from './services/browser-service';
+import tasklistService from './services/tasklist-service';
 
 const App = () => {
   
-  const user = useSelector(state => state.taskManager.user);
+  let user = useSelector(state => state.taskManager.user);
   const dispatch = useDispatch();
   // const navigate = useNavigate();
+  
+  // Load User
+  if (!user) {
+    user = browserService.getUser();
+    if (user) {
+      dispatch(setUser(user));
+    }
+  }
+  
+  const taskListIndex = useSelector(state => state.taskManager.taskListIndex);
+  if (user && !taskListIndex) {
+      tasklistService.loadTaskList(user.id).then( tasklists => 
+        dispatch(setTaskListIndex(tasklists))
+      )
+  }
 
   const logout = () => {
     browserService.removeUser();
@@ -30,12 +46,6 @@ const App = () => {
     window.location = '/';
   }
 
-  if (!user) {
-    const loadedUser = browserService.getUser();
-    if (loadedUser) {
-      dispatch(setUser(loadedUser));
-    }
-  }
 
   return (
     <Router>
