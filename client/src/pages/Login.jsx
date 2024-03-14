@@ -5,6 +5,7 @@ import { setUser, setTaskListIndex } from "../reducers/taskManagerReducer";
 import loginService from "../services/login-service";
 import userService from "../services/user-service";
 import tasklistService from "../services/tasklist-service";
+import browserService from "../services/browser-service";
 
 
 const LoginPage = () => {
@@ -37,14 +38,18 @@ const LoginPage = () => {
     const onLogin = (user) => {
         loginService.loginUser(user)
             .then( user => {
-                dispatch(setUser(user))
+                browserService.storeUser(user);
+                dispatch(setUser(user));
             })
             .catch(error => console.log(error));
     }
 
     const onCreate = (user) => {
         userService.createUser(user)
-            .then( response => dispatch(setUser(response)))
+            .then( user => {
+                browserService.storeUser(user);
+                dispatch(setUser(user))
+            })
             .catch(error => console.log(error));
     }
 
