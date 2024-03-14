@@ -20,6 +20,7 @@ const Task = () => {
     // const task = useSelector(state => state.taskManager.taskListIndex.find(item => item.id == taskListId)?.tasks.find(task => task.id === taskId));
 
     const [data, setData] = useState(task);
+    const [error, setError] = useState();
     
     useEffect(() => {
         setData(task)
@@ -43,7 +44,8 @@ const Task = () => {
             // editedTask.taskListId = taskListId;
             dispatch(addTask(newTask));
             handleGoBack();
-        });
+        })
+        .catch(error => setErrorMessage(error));
     }
 
     const handleClickDeleteTask = () => {
@@ -55,9 +57,14 @@ const Task = () => {
                     // editedTask.taskListId = taskListId;
                     dispatch(deleteTask(data));
                     handleGoBack();
-                });
+                })
+                .catch(error => setErrorMessage(error));
             }
         }
+    }
+
+    const setErrorMessage = (error) => {
+        setError(error?.response?.data?.error || 'Error to execute the opperation.');
     }
 
     function handleFieldChange(e) {
@@ -100,6 +107,8 @@ const Task = () => {
             </div>
 
             <Textarea name="description" title="Description" value={data.description} onChange={handleFieldChange} />
+
+            { error && <div className="w-full text-sm text-red-500">{error}</div>}
 
             {
                 data.id &&

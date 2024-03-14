@@ -1,17 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import Button from "../components/Button";
-import { useDispatch, useSelector } from "react-redux";
-import tasklistService from "../services/tasklist-service";
-import { setTaskListIndex } from "../reducers/taskManagerReducer";
+import { useSelector } from "react-redux";
 
 const TaskListIndex = () => {
     const navigate = useNavigate();
-    const dispatch = useDispatch();
-    const user = useSelector(state => state.taskManager.user);
     const taskListIndex = useSelector(state => state.taskManager.taskListIndex);
-    // if (!taskListIndex) {
-    //     tasklistService.loadTaskList(user.id).then( tasklists => dispatch(setTaskListIndex(tasklists)))
-    // }
 
     function handleSelectTaskList(taskList) {
         navigate(`/task-list/${taskList.id}`);

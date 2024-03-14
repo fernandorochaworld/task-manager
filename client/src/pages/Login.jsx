@@ -11,7 +11,6 @@ import { useState } from "react";
 const LoginPage = () => {
 
     const dispatch = useDispatch();
-
     const [error, setError] = useState();
 
     const handleSubmit = (e) => {

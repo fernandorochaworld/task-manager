@@ -27,6 +27,7 @@ const TaskList = () => {
     const { id } = useParams();
     const taskList = useSelector(updateTaskList);
     const user = useSelector(state => state.taskManager.user);
+    const [error, setError] = useState();
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -42,6 +43,10 @@ const TaskList = () => {
 
     function handleGoBack() {
         navigate('/');
+    }
+
+    const setErrorMessage = (error) => {
+        setError(error?.response?.data?.error || 'Error to execute the opperation.');
     }
 
     function handleFieldChange(e) {
@@ -89,15 +94,16 @@ const TaskList = () => {
             console.log(newTaskList);
             dispatch(addTaskList(newTaskList));
 
-            // // If adding new Task List, then continue on the page. Else go back.
-            // if (data.id) {
-            //     handleGoBack();
-            // } else {
+            // If adding new Task List, then continue on the page. Else go back.
+            if (data.id) {
+                handleGoBack();
+            } else {
                 // setData(newTaskList);
                 reloadData(newTaskList.id);
-            // }
+            }
 
         })
+        .catch(error => setErrorMessage(error));
 
     }
 
@@ -113,7 +119,8 @@ const TaskList = () => {
                 tasklistService.deleteTaskList(user.id, data.id).then( () => {
                     dispatch(deleteTaskList(data));
                     handleGoBack();
-                });
+                })
+                .catch(error => setErrorMessage(error));
             }
         }
     }
@@ -149,6 +156,7 @@ const TaskList = () => {
             // reloadData(data.id);
 
         })
+        .catch(error => setErrorMessage(error));
         
     }
 
@@ -167,11 +175,11 @@ const TaskList = () => {
         }
 
 
-
         taskService.editTask(user.id, data.id, task.id, editedTask).then( newTask => {
             dispatch(addTask(newTask));
             reloadData(data.id);
-        });
+        })
+        .catch(error => setErrorMessage(error));
 
     }
 
@@ -184,7 +192,8 @@ const TaskList = () => {
                 taskService.deleteTask(user.id, task.tasklist_id, task.id).then( () => {
                     dispatch(deleteTask(task));
                     reloadData(task.tasklist_id);
-                });
+                })
+                .catch(error => setErrorMessage(error));
             }
         }
     }
@@ -195,7 +204,10 @@ const TaskList = () => {
                 <h1 className="tm-title-2 text-start">
                     Task List
                 </h1>
-                <Button text="X" title="Go to Index" className="w-12 text-bold" styleType="transparent" onClick={handleGoBack} />
+                <div className="flex">
+                    <Button title="New Task List" onClick={() => navigate('/task-list')} />
+                    <Button text="X" title="Go to Index" className="w-12 ms-3 text-bold" styleType="transparent" onClick={handleGoBack} />
+                </div>
             </div>
             <Input type="text" name="name" title="List Name" value={data.name} error={errorList} onChange={handleFieldChange} />
 
@@ -219,6 +231,8 @@ const TaskList = () => {
                     </div>
                 </>
             }
+
+            { error && <div className="w-full text-sm text-red-500">{error}</div>}
 
             {
                 data.id &&
