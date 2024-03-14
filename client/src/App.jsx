@@ -2,6 +2,7 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
+  useNavigate,
   // Link
 } from 'react-router-dom'
 
@@ -14,11 +15,27 @@ import TaskListIndex from './pages/TaskListIndex';
 import LoginPage from './pages/Login';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUser } from './reducers/taskManagerReducer';
+import browserService from './services/browser-service';
 
 const App = () => {
   
   const user = useSelector(state => state.taskManager.user);
   const dispatch = useDispatch();
+  // const navigate = useNavigate();
+
+  const logout = () => {
+    browserService.removeUser();
+    dispatch(setUser(null));
+    // navigate('/');
+    window.location = '/';
+  }
+
+  if (!user) {
+    const loadedUser = browserService.getUser();
+    if (loadedUser) {
+      dispatch(setUser(loadedUser));
+    }
+  }
 
   return (
     <Router>
@@ -34,7 +51,7 @@ const App = () => {
             user &&
             <span>
               Logged in as <strong>{user.username}</strong>.
-              <a onClick={() => dispatch(setUser(null))} href="#" className="font-medium text-blue-600 dark:text-blue-500 ms-3">Logout</a>
+              <a onClick={logout} href="#" className="font-medium text-blue-600 dark:text-blue-500 ms-3">Logout</a>
             </span>
           }
           
