@@ -1,17 +1,18 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import Button from "../components/Button";
 import Input from "../components/Input";
-import { setUser, setTaskListIndex } from "../reducers/taskManagerReducer";
+import { setUser } from "../reducers/taskManagerReducer";
 import loginService from "../services/login-service";
 import userService from "../services/user-service";
-import tasklistService from "../services/tasklist-service";
 import browserService from "../services/browser-service";
+import { useState } from "react";
 
 
 const LoginPage = () => {
 
-    const user = useSelector(state => state.taskManager.user);
     const dispatch = useDispatch();
+
+    const [error, setError] = useState();
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -31,17 +32,13 @@ const LoginPage = () => {
         }
     }
 
-    const handleGoBack = () => {
-        navigate(`/task-list/${taskListId}`);
-    }
-
     const onLogin = (user) => {
         loginService.loginUser(user)
             .then( user => {
                 browserService.storeUser(user);
                 dispatch(setUser(user));
             })
-            .catch(error => console.log(error));
+            .catch(error => setErrorMessage(error));
     }
 
     const onCreate = (user) => {
@@ -50,46 +47,28 @@ const LoginPage = () => {
                 browserService.storeUser(user);
                 dispatch(setUser(user))
             })
-            .catch(error => console.log(error));
+            .catch(error => setErrorMessage(error));
     }
 
-    const onLogout = () => {
-        dispatch(setUser(null));
-    }
-
-    const onTest = () => {
-        dispatch(setUser({username: 'testaaa', id: 'aaa'}));
+    const setErrorMessage = (error) => {
+        setError(error?.response?.data?.error || 'Error to execute the opperation.');
     }
 
 
     return (
-        <div>
-            {
-                user
-                    ? <div>
-                        <p><strong>{user.username}</strong> is logged in</p>
-                        <Button title="Logout" styleType="primary" onClick={onLogout} />
-                    </div>
-                    : <form onSubmit={handleSubmit} className="flex flex-wrap gap-5">
-                        {
-                            user && <p><strong>{user.username}</strong> is logged in</p>
-                        }
-                        <div className="flex flex-1 justify-between">
-                            <h1 className="tm-title-2 text-start">
-                                Login
-                            </h1>
-                            <Button title="x" className="w-12" styleType="transparent" onClick={handleGoBack} />
-                        </div>
+        <form onSubmit={handleSubmit} className="flex flex-wrap gap-5">
+            <h1 className="tm-title-2 text-start">
+                Login
+            </h1>
 
-                        <Input type="text" name="username" title="User Name" />
-                        <Input type="password" name="password" title="Password" />
+            <Input type="text" name="username" title="User Name" />
+            <Input type="password" name="password" title="Password" />
 
-                        <Button title="Set User" onClick={onTest} />
-                        <Button title="Login" type="submit" styleType="primary" value="login" />
-                        <Button title="Create" type="submit" styleType="primary" value="create" />
-                    </form>
-            }
-        </div>
+            { error && <div className="w-full text-sm text-red-500">{error}</div>}
+
+            <Button title="Login" type="submit" styleType="primary" value="login" />
+            <Button title="Create" type="submit" styleType="primary" value="create" />
+        </form>
     )
 };
 
