@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { addTask, addTaskList, deleteTask, deleteTaskList } from "../reducers/taskManagerReducer";
 import { useState } from "react";
 import TaskDetail from "../components/TaskDetails";
+import tasklistService from "../services/tasklist-service";
+import taskService from "../services/task-service";
 
 const taskListInitialData = {
     id: '',
@@ -24,6 +26,7 @@ const TaskList = () => {
     const updateTaskList = (state) => state.taskManager.taskListIndex.find(item => item.id == id)
     const { id } = useParams();
     const taskList = useSelector(updateTaskList);
+    const user = useSelector(state => state.taskManager.user);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -59,7 +62,7 @@ const TaskList = () => {
 
     const reloadData = (taskListId) => {
         handleGoBack();
-        setTimeout(() => navigate(`/task-list/${taskListId}`));
+        setTimeout(() => navigate(`/task-list/${taskListId}`), 1);
     }
 
     const handleClickSave = (e) => {
@@ -72,21 +75,25 @@ const TaskList = () => {
         }
         setErrorList(null);
 
-        const newTaskList = {
-            ...data,
-            id: data.id || data.name
-        };
+        (
+            data.id
+            ? tasklistService.editTaskList(user.id, data.id, data)
+            : tasklistService.createTaskList(user.id, data)
+        ).then( newTaskList => {
 
-        console.log(newTaskList);
-        dispatch(addTaskList(newTaskList));
+            console.log(newTaskList);
+            dispatch(addTaskList(newTaskList));
 
-        // If adding new Task List, then continue on the page. Else go back.
-        if (data.id) {
-            handleGoBack();
-        } else {
-            setData(newTaskList);
-            reloadData(newTaskList.id);
-        }
+            // // If adding new Task List, then continue on the page. Else go back.
+            // if (data.id) {
+            //     handleGoBack();
+            // } else {
+                // setData(newTaskList);
+                reloadData(newTaskList.id);
+            // }
+
+        })
+
     }
 
     const handleClickDelete = (e) => {
@@ -98,8 +105,10 @@ const TaskList = () => {
             if (confirmation) {
                 setErrorList(null);
 
-                dispatch(deleteTaskList(data));
-                handleGoBack();
+                tasklistService.deleteTaskList(user.id, data.id).then( () => {
+                    dispatch(deleteTaskList(data));
+                    handleGoBack();
+                });
             }
         }
     }
@@ -120,23 +129,22 @@ const TaskList = () => {
         }
         setErrorTask(null);
 
-        const newTask = {
-            ...taskInitialData,
-            id: taskTitle,
-            title: taskTitle,
-        };
-        const newList = {
-            ...data,
-            tasks: data.tasks.map(item => item)
-        };
-        newList.tasks.push(newTask);
-        newList.id = newList.id || newList.name;
-        setData(newList);
-        setTaskTitle('');
+        taskService.createTask(user.id, data.id, {...taskInitialData, title: taskTitle}).then( newTask => {
 
-        //Save TaskList
-        dispatch(addTaskList(newList));
-        // reloadData(data.id);
+            const newList = {
+                ...data,
+                tasks: data.tasks?.map(item => item)
+            };
+            newList.tasks.push(newTask);
+            setData(newList);
+            setTaskTitle('');
+
+            //Save TaskList
+            dispatch(addTaskList(newList));
+            // reloadData(data.id);
+
+        })
+        
     }
 
     const handleClickUpdateTask = (task, propertyName, newValue) => {
@@ -146,15 +154,20 @@ const TaskList = () => {
             medium: 'high',
             low: 'medium',
         }
-        editedTask.taskListId = taskList.id;
+        // editedTask.taskListId = taskList.id;
         if (propertyName === 'priority') {
             editedTask['priority'] = levels[editedTask.priority] || 'high';
         } else {
             editedTask[propertyName] = newValue;
         }
-        dispatch(addTask(editedTask));
 
-        reloadData(data.id);
+
+
+        taskService.editTask(user.id, data.id, task.id, editedTask).then( newTask => {
+            dispatch(addTask(newTask));
+            reloadData(data.id);
+        });
+
     }
 
     const handleClickDeleteTask = (task) => {
@@ -162,11 +175,11 @@ const TaskList = () => {
 
             const confirmation = confirm(`Are you sure to remove this task "${task.title}"?`);
             if (confirmation) {
-                const editedTask = { ...task };
-                editedTask.taskListId = taskList.id;
-                dispatch(deleteTask(editedTask));
-
-                reloadData(data.id);
+                
+                taskService.deleteTask(user.id, task.tasklist_id, task.id).then( () => {
+                    dispatch(deleteTask(task));
+                    reloadData(task.tasklist_id);
+                });
             }
         }
     }
