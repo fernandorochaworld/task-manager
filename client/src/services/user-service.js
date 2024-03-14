@@ -1,5 +1,5 @@
 import axios from 'axios';
-const baseUrl = '/api/pessoa';
+const baseUrl = `${import.meta.env.VITE_API_URL}/person`;
 
 const createUser = (newUser) => {
     const request = axios.post(baseUrl, newUser);

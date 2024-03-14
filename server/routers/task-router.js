@@ -25,7 +25,7 @@ taskRouter.post('/:personId/tasklist/:tasklistId/task', async (request, response
     const {tasklistId, personId} = request.params;
     const { title, description, status, priority, dueDate } = request.body
     // Error handling
-    if (!title || !status || !priority || !dueDate) {
+    if (!title || !status || !priority) {
         return response.status(400).send({
             error: 'missing content in body'
         })
@@ -57,7 +57,7 @@ taskRouter.put('/:person_id/tasklist/:tasklist_id/task/:_id', async (request, re
 
     const { title, description, status, priority, dueDate } = request.body
     // Error handling
-    if (!title || !status || !priority || !dueDate) {
+    if (!title || !status || !priority) {
         return response.status(400).send({
             error: 'missing content in body'
         })
