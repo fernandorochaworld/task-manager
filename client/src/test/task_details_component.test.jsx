@@ -38,11 +38,10 @@ import tasks from '../utils/mock-data-task.json';
 // Mock internal environment variables
 
 describe('<TaskDetails />', () => {
-  
+
   let [selectedTask, selectedProperty, newSelectedValue] = [null, null, null];
 
   const handleSelectedTask = (task, property, newValue) => {
-    console.log(task, property, newValue);
     selectedTask = task;
     selectedProperty = property;
     newSelectedValue = newValue;
@@ -59,18 +58,19 @@ describe('<TaskDetails />', () => {
         handleClickUpdateTask={handleSelectedTask}
         handleSelectTask={handleSelectedTask}
         handleClickDeleteTask={handleSelectedTask}
-      />);
+      />
+    );
 
 
-      // Find List of Todo Tasks
+    // Check for List of Tasks Todo
     const element = screen.getByText('Tasks Todo');
     expect(element).toHaveTextContent('Tasks Todo');
 
 
-    // Find right list of records, the first li is for the title + 2 tasks
+    // Check if the UI has the right list of records, the first li is for the title + 2 tasks
     const lis = screen.getAllByRole('listitem');
     expect(lis.length).toBe(3);
-    
+
     // Click the button to active the related task
     const startBtns = screen.getAllByTitle('Start task');
     await user.click(startBtns[1]);
