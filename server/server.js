@@ -7,19 +7,12 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { dbConnect } from './config/db.js';
 import routers from './routers/routers.js';
+import { morganSetup } from './utils/morgan.js'
 
-import morgan from 'morgan';
 
-// import mongoose from 'mongoose';
-// import router from './router';
-
-const app = express();
 dotenv.config();
-
+const app = express();
 const PORT = process.env.PORT;
-const MONGO_URL = process.env.MONGO_URL;
-
-// console.log('port', PORT, 'MONGO', MONGO_URL);
 
 app.use(cors({
     credentials: true,
@@ -27,17 +20,12 @@ app.use(cors({
 
 app.use(compression());
 app.use(cookieParser());
-// app.use(bodyParser.urlencoded({ extended: true }));
-// app.use(bodyParser.json());
 app.use(bodyParser.json()); //utilizes the body-parser package
 app.use(bodyParser.urlencoded({ extended: true }));
 
-morgan.token('req-body', (req) => JSON.stringify(req.body));
-app.use(
-  morgan(
-    ':method :url :status :res[content-length] - :response-time ms :req-body'
-  )
-);
+if (process.env.NODE_ENV !== 'production') {
+  morganSetup();
+}
 
 
 try {
@@ -48,8 +36,3 @@ try {
 } catch (e) {
     console.log(e.message);
 }
-
-// mongoose.Promise = Promise;
-// mongoose.connect(MONGO_URL);
-// mongoose.connection.on('error', (error) => {console.log(error)})
-
