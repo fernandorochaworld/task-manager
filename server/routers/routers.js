@@ -1,12 +1,12 @@
-import express from "express";
-import taskRouter from "./task-router.js";
-import loginRouter from "./login-router.js";
-import tasklistRouter from "./task-list-router.js";
-import personRouter from "./person-router.js";
+const express = require("express");
+const taskRouter = require("./task-router.js");
+const loginRouter = require("./login-router.js");
+const tasklistRouter = require("./task-list-router.js");
+const personRouter = require("./person-router.js");
 
 const router = express.Router();
 
-export default () => {
+module.exports = () => {
     router.use('/api/login', loginRouter);
     router.use('/api/person', personRouter);
     router.use('/api/person', tasklistRouter);

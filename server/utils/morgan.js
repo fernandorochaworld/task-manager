@@ -1,7 +1,7 @@
-import morgan from 'morgan';
-import express from 'express';
+const morgan = require('morgan');
+const express = require('express');
 
-export const morganSetup = () => {
+module.exports = morganSetup = () => {
     morgan.token('req-body', (req) => JSON.stringify(req.body));
 
     const app = express();

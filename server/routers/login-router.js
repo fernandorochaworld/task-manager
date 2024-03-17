@@ -1,11 +1,11 @@
-import bcrypt from 'bcryptjs'
-import express from 'express'
-const loginRouter = express.Router()
+const bcrypt = require('bcryptjs');
+const express = require('express');
+const loginRouter = express.Router();
 
 /**
- * Import mongoose model
+ * const mongoose model
  */
-import Person from '../models/person.js'
+const Person = require('../models/person.js');
 
 /**
  * @receives a POST request to the URL: http://localhost:3001/api/login
@@ -35,4 +35,4 @@ loginRouter.post('/', async (request, response) => {
 })
 
 
-export default loginRouter
+module.exports = loginRouter

@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import { collectionTransformation } from "../utils/mongoose-utils.js";
+const mongoose = require("mongoose");
+const { collectionTransformation } = require("../utils/mongoose-utils.js");
 
 const TaskListSchema = new mongoose.Schema({
     name: { type: String, required: true },
@@ -26,4 +26,4 @@ TaskListSchema.set('toJSON', {
     transform: collectionTransformation
 });
 
-export default mongoose.model('tasklist', TaskListSchema);
+module.exports = mongoose.model('tasklist', TaskListSchema);

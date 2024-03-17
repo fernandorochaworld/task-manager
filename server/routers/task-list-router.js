@@ -1,11 +1,11 @@
-import express from 'express'
+const express = require('express');
 
 /**
- * Import mongoose models
+ * const mongoose models
  */
-import Person from '../models/person.js'
-import TaskList from '../models/task-list.js'
-import Task from '../models/task.js'
+const Person = require('../models/person.js');
+const TaskList = require('../models/task-list.js');
+const Task = require('../models/task.js');
 
 const tasklistRouter = express.Router()
 
@@ -98,7 +98,7 @@ tasklistRouter.delete('/:person_id/tasklist/:_id', async (request, response) => 
         })
     }
     const tasklist = await TaskList.findOne({_id, person_id})
-    // Remove the tasklist from the person who owns it
+    // Remove the tasklist = require(the person who owns it);
     // person.tasklists = person.tasklists.filter(id => id.toJSON() !== tasklistId)
     // await person.save()
     // Remove the tasks
@@ -113,4 +113,4 @@ tasklistRouter.delete('/:person_id/tasklist/:_id', async (request, response) => 
 })
 
 
-export default tasklistRouter
+module.exports = tasklistRouter

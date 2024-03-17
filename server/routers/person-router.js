@@ -1,12 +1,12 @@
-import bcrypt from 'bcryptjs'
-import express from 'express'
+const bcrypt = require('bcryptjs');
+const express = require('express');
 
 /**
- * Import mongoose models
+ * const mongoose models
  */
-import Person from '../models/person.js'
-import TaskList from '../models/task-list.js'
-import Task from '../models/task.js'
+const Person = require('../models/person.js');
+const TaskList = require('../models/task-list.js');
+const Task = require('../models/task.js');
 
 const personRouter = express.Router()
 
@@ -78,7 +78,7 @@ personRouter.post('/', async (request, response) => {
 personRouter.delete('/:id', async (request, response) => {
   const id = request.params.id
   // Get tasklists to delete
-  const tasklistIds = (await Person.findById(id)).tasklists.map(id => id.toJSON())
+  const tasklistIds = (await Person.findById(id))?.tasklists?.map(id => id.toJSON()) || [];
   // Get the tasks to delete
   const tasklists = await Promise.all(tasklistIds.map(id => TaskList.findById(id)))
   const tasks = tasklists.map(tasklist => tasklist.tasks)
@@ -87,8 +87,8 @@ personRouter.delete('/:id', async (request, response) => {
   await Person.findByIdAndDelete(id)
   await Promise.all(tasklistIds.map(id => TaskList.findByIdAndDelete(id)))
   await Promise.all(taskIds.map(id => Task.findByIdAndDelete(id)))
-  response.status(200).send()
+  response.status(204).send()
 })
 
 
-export default personRouter;
+module.exports = personRouter;

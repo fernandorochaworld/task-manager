@@ -1,7 +1,7 @@
-import bcrypt from 'bcryptjs'
-import Person from "../models/person.js";
-import { closeConnection, dbConnect } from "./db.js";
-import dotenv from 'dotenv';
+const bcrypt = require('bcryptjs');
+const Person = require("../models/person.js");
+const { closeConnection, dbConnect } = require("./db.js");
+const dotenv = require('dotenv');
 dotenv.config();
 
 

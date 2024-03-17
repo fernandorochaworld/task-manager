@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import { collectionTransformation } from "../utils/mongoose-utils.js";
+const mongoose = require("mongoose");
+const collectionTransformation = require("../utils/mongoose-utils.js");
 
 const PersonSchema = new mongoose.Schema({
     username: { type: String, required: true },
@@ -20,4 +20,4 @@ PersonSchema.set('toJSON', {
     }
 });
 
-export default mongoose.model('person', PersonSchema);
+module.exports = mongoose.model('person', PersonSchema);
