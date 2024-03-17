@@ -1,7 +1,10 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
+require('dotenv').config();
 
-export const dbConnect = async () => {
-    await mongoose.connect(process.env.MONGO_URL).then(null, error => {
+const dbConnect = async () => {
+    const mongoUrl = process.env.NODE_ENV === 'test' ? process.env.MONGO_URL_TEST : process.env.MONGO_URL;
+    
+    await mongoose.connect(mongoUrl).then(null, error => {
         console.log(error);
         throw new 'Connection Error.';
     });
@@ -14,10 +17,12 @@ export const dbConnect = async () => {
     connection.on('error', () => { throw new ('Connection failed') });
 }
 
-export const closeConnection = async () => {
+const closeConnection = async () => {
     try {
         await mongoose.connection.close();
     } catch (error) {
         console.log('Error closing connection: ', error)
     }
 }
+
+module.exports = { dbConnect, closeConnection };
