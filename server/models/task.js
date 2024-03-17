@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { collectionTransformation } = require("../utils/mongoose-utils.js");
+const { collectionTransformation, opts } = require("../utils/mongoose-utils.js");
 
 const TaskSchema = new mongoose.Schema({
     title: { type: String, required: true },
@@ -11,7 +11,7 @@ const TaskSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'tasklist'
     }
-});
+}, opts);
 
 
 TaskSchema.set('toJSON', {
