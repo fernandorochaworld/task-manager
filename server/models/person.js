@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const collectionTransformation = require("../utils/mongoose-utils.js");
+const { collectionTransformation, opts } = require("../utils/mongoose-utils.js");
 
 const PersonSchema = new mongoose.Schema({
     username: { type: String, required: true },
@@ -10,7 +10,7 @@ PersonSchema.virtual('tasklists', {
     ref: 'tasklist',
     localField: '_id',
     foreignField: 'person_id'
-});
+}, opts);
 
 PersonSchema.set('toJSON', {
     virtuals: true,
