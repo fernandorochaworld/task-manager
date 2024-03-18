@@ -1,0 +1,47 @@
+### Application Root
+GET http://localhost:3001
+
+
+### Get List
+GET http://localhost:3001/api/person/65f1fef9f30f58f28dd4e268/tasklist/65f2159d5732fd4dea4d1bda/task
+
+
+### Get record
+GET http://localhost:3001/api/person/65f1fef9f30f58f28dd4e268/tasklist/65f2159d5732fd4dea4d1bda/task/65eb3838845b612161bcf8d3
+
+
+
+### Not Found URL
+GET http://localhost:3001/api/person/65f1fef9f30f58f28dd4e268/tasklist/65f2159d5732fd4dea4d1bda/not-found-url
+
+
+
+### Post task
+POST http://localhost:3001/api/person/65f1fef9f30f58f28dd4e268/tasklist/65f2159d5732fd4dea4d1bda/task
+Content-Type: application/json
+
+{
+    "title": "Task 2",
+    "description": "My Task 1",
+    "status": "todo",
+    "priority": "low",
+    "dueDate": "2024-10-10"
+}
+
+
+### PUT task
+PUT http://localhost:3001/api/person/65f1fef9f30f58f28dd4e268/tasklist/65f2159d5732fd4dea4d1bda/task/65eb3838845b612161bcf8d3
+Content-Type: application/json
+
+{
+    "title": "Task 11",
+    "description": "My Task 11",
+    "status": "done",
+    "priority": "high",
+    "dueDate": "2024-10-11"
+}
+
+
+### DELETE task
+DELETE http://localhost:3001/api/person/65f1fef9f30f58f28dd4e268/tasklist/65f2159d5732fd4dea4d1bda/task/65eb3838845b612161bcf8d3
+

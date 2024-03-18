@@ -1,0 +1,36 @@
+### Application Root
+GET http://localhost:3001
+
+
+### Get List
+GET http://localhost:3001/api/person/65f1fef9f30f58f28dd4e268/tasklist
+
+
+### Get List
+GET http://localhost:3001/api/person/65f1fef9f30f58f28dd4e268/tasklist/full
+
+
+### Get record
+GET http://localhost:3001/api/person/65f1fef9f30f58f28dd4e268/tasklist/65eb29faef4f5956065e7235
+
+
+### Post tasklist
+POST http://localhost:3001/api/person/65f1fef9f30f58f28dd4e268/tasklist/
+Content-Type: application/json
+
+{
+    "name": "Sprint 1"
+}
+
+### PUT tasklist
+PUT http://localhost:3001/api/person/65f1fef9f30f58f28dd4e268/tasklist/65eb29faef4f5956065e7235
+Content-Type: application/json
+
+{
+    "name": "Sprint 11"
+}
+
+
+### DELETE tasklist
+DELETE http://localhost:3001/api/person/65f1fef9f30f58f28dd4e268/tasklist/65eb29faef4f5956065e7235
+

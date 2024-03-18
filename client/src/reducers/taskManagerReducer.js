@@ -8,35 +8,42 @@ import { createSlice } from '@reduxjs/toolkit';
 const orderTaskFn = (a, b) => a.title.localeCompare(b.title);
 
 const initialState = {
-  selectedTask: null,
-  selectedTaskList: null,
-  taskListIndex: [
-    {
-      id: 'sprint1',
-      name: 'Sprint 1',
-      tasks: [
-        {
-          id: 'task1',
-          title: 'task1',
-          description: 'My task 1',
-          priority: 'high',
-          status: 'todo',
-          dueDate: new Date().toJSON(),
-        }
-      ]
-    }
-  ],
+  user: null,
+  taskListIndex: null,
+  // taskListIndex: [
+  //   {
+  //     id: 'sprint1',
+  //     name: 'Sprint 1',
+  //     tasks: [
+  //       {
+  //         id: 'task1',
+  //         title: 'task1',
+  //         description: 'My task 1',
+  //         priority: 'high',
+  //         status: 'todo',
+  //         dueDate: new Date().toJSON(),
+  //       }
+  //     ]
+  //   }
+  // ],
 }
 
 const slice = createSlice({
   name: 'taskManager',
   initialState,
   reducers: {
+    setUser(state, action) {
+      state.user = action.payload;
+    },
+    setTaskListIndex(state, action) {
+      state.taskListIndex = action.payload;
+    },
+    
     addTaskList(state, action) {
       console.log('received action: ', action)
       console.log('updating state to ...', action.payload)
       const taskList = { ...action.payload };
-      taskList.tasks = [...taskList.tasks];
+      taskList.tasks = [...taskList.tasks||[]];
       if (taskList.id) {
         state.taskListIndex = state.taskListIndex.filter(item => item.id !== taskList.id);
       }
@@ -58,12 +65,12 @@ const slice = createSlice({
       console.log('received action: ', action)
       console.log('updating state to ...', action.payload)
       const task = action.payload;
-      const taskList = state.taskListIndex.filter(item => item.id === task.taskListId)?.[0];
-      state.taskListIndex = state.taskListIndex.filter(item => item.id !== task.taskListId);
+      const taskList = state.taskListIndex.filter(item => item.id === task.tasklist_id)?.[0];
+      state.taskListIndex = state.taskListIndex.filter(item => item.id !== task.tasklist_id);
       if (taskList) {
         taskList.tasks = taskList.tasks.filter(item => item.id !== task.id);
       }
-      delete task.taskListId;
+      delete task.tasklist_id;
       taskList.tasks.push(task);
       taskList.tasks.sort(orderTaskFn);
       state.taskListIndex.push(taskList);
@@ -74,8 +81,8 @@ const slice = createSlice({
       console.log('received action: ', action)
       console.log('updating state to ...', action.payload)
       const task = {...action.payload};
-      const taskList = state.taskListIndex.filter(item => item.id === task.taskListId)?.[0];
-      state.taskListIndex = state.taskListIndex.filter(item => item.id !== task.taskListId);
+      const taskList = state.taskListIndex.filter(item => item.id === task.tasklist_id)?.[0];
+      state.taskListIndex = state.taskListIndex.filter(item => item.id !== task.tasklist_id);
       if (taskList) {
         taskList.tasks = taskList.tasks.filter(item => item.id !== task.id);
       }
@@ -87,6 +94,8 @@ const slice = createSlice({
 })
 
 export const {
+  setUser,
+  setTaskListIndex,
   addTaskList,
   deleteTaskList,
   addTask,
