@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - production
-      - main
   pull_request:
     branches:
       - production
@@ -30,5 +29,6 @@ jobs:
       - name: Run test
         run: npm run test
 
-      # - name: Deploy
-      #   run: curl ${{ secrets.CLIENT_DEPLOYMENT_HOOK }}
+      - name: Deploy
+        if: ${{ github.ref == 'refs/heads/production' && github.event_name == 'push' }}
+        run: curl ${{ secrets.CLIENT_DEPLOYMENT_HOOK }}

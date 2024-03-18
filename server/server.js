@@ -14,9 +14,7 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT;
 
-app.use(cors({
-    credentials: true,
-}));
+app.use(cors());
 
 app.use(compression());
 app.use(cookieParser());
