@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { collectionTransformation } = require("../utils/mongoose-utils.js");
+const { collectionTransformation, opts } = require("../utils/mongoose-utils.js");
 
 const TaskListSchema = new mongoose.Schema({
     name: { type: String, required: true },
@@ -13,7 +13,7 @@ const TaskListSchema = new mongoose.Schema({
     //         ref: 'task'
     //     }
     // ]
-});
+}, opts);
 
 TaskListSchema.virtual('tasks', {
     ref: 'task',
